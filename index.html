@@ -182,13 +182,13 @@
                         <a href="https://github.com/Amoghprakash2k4" class="text-2xl hover:text-indigo-400 transition-colors">
                             <i data-lucide="github"></i>
                         </a>
+                        <a href="https://www.instagram.com/_amogh.prakash_/" class="text-2xl hover:text-indigo-400 transition-colors">
+                            <i data-lucide="instagram"></i>
+                        </a>
                         <a href="https://www.linkedin.com/in/amogh-prakash-93b585273/" class="text-2xl hover:text-indigo-400 transition-colors">
                             <i data-lucide="linkedin"></i>
                         </a>
-                        <a href="" class="text-2xl hover:text-indigo-400 transition-colors">
-                            <i data-lucide="twitter"></i>
-                        </a>
-                        <a href="amogh.p27@gmail.com" class="text-2xl hover:text-indigo-400 transition-colors">
+                        <a href="mailto:amogh.p27@gmail.com" class="text-2xl hover:text-indigo-400 transition-colors">
                             <i data-lucide="mail"></i>
                         </a>
                     </div>
@@ -229,7 +229,7 @@
 
                 <div class="glass-card rounded-xl overflow-hidden">
                     <div class="relative h-64 overflow-hidden">
-                        <img src="https://picsum.photos/800/600?random=2" alt="3D Web App" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                        <img src="different-emotions-collage-set-of-male-and-female-emotional-portraits-young-diverse-people-posing-at-colorful-backgrounds-T3788B.jpg" alt="3D Web App" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
                         <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
                         <div class="absolute bottom-4 left-4">
                             <span class="bg-indigo-600 text-white px-3 py-1 rounded-full text-sm font-medium">scikit-learn </span>
@@ -251,7 +251,7 @@
                 <!-- Project 2 -->
                 <div class="glass-card rounded-xl overflow-hidden">
                     <div class="relative h-64 overflow-hidden">
-                        <img src="https://picsum.photos/800/600?random=3" alt="VR Experience" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                        <img src="I_Am_Music_by_Playboi_Carti.jpg" alt="VR Experience" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
                         <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
                         <div class="absolute bottom-4 left-4">
                             <span class="bg-purple-600 text-white px-3 py-1 rounded-full text-sm font-medium">Collaborative Filtering</span>
@@ -324,17 +324,14 @@
                 </div>
                 
                 <div class="flex space-x-6">
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                        <i data-lucide="github" class="w-6 h-6"></i>
+                    <a href="https://github.com/Amoghprakash2k4" class="text-2xl hover:text-indigo-400 transition-colors">
+                        <i data-lucide="github"></i>
                     </a>
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                        <i data-lucide="linkedin" class="w-6 h-6"></i>
+                    <a href="https://www.linkedin.com/in/amogh-prakash-93b585273/" class="text-2xl hover:text-indigo-400 transition-colors">
+                        <i data-lucide="linkedin"></i>
                     </a>
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                        <i data-lucide="twitter" class="w-6 h-6"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                        <i data-lucide="instagram" class="w-6 h-6"></i>
+                    <a href="mailto:amogh.p27@gmail.com" class="text-2xl hover:text-indigo-400 transition-colors">
+                        <i data-lucide="mail"></i>
                     </a>
                 </div>
             </div>
@@ -398,85 +395,57 @@
         const torusKnot = new THREE.Mesh(geometry, material);
         scene.add(torusKnot);
         
-        // Add ambient and directional light
-        const ambientLight = new THREE.AmbientLight(0x404040);
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
         scene.add(ambientLight);
         
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-        directionalLight.position.set(1, 1, 1);
-        scene.add(directionalLight);
+        const pointLight = new THREE.PointLight(0xffffff, 1);
+        pointLight.position.set(5, 5, 5);
+        scene.add(pointLight);
         
-        camera.position.z = 3;
+        // Orbit Controls
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
         
-        // Animation loop with GSAP
-        gsap.ticker.add(() => {
-            torusKnot.rotation.x += 0.005;
-            torusKnot.rotation.y += 0.005;
-            
-            particlesMesh.rotation.y += 0.001;
-            
+        camera.position.set(0, 0, 5);
+        
+        // Animation Loop
+        const animate = function () {
+            requestAnimationFrame(animate);
+        
+            torusKnot.rotation.x += 0.01;
+            torusKnot.rotation.y += 0.01;
+        
+            controls.update();
+        
             renderer.render(scene, camera);
-        });
+        };
         
-        // Handle window resize
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
+        animate();
         
-        // Smooth scrolling for navigation
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                targetElement.scrollIntoView({ behavior: 'smooth' });
+        // Prevent form submission and handle it via AJAX
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            fetch(this.action, {
+                method: this.method,
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    window.location.hash = '#home';
+                } else {
+                    alert('There was an error submitting the form.');
+                }
+            }).catch(error => {
+                console.error('Error:', error);
+                alert('There was an error submitting the form.');
             });
-        });
-        
-        // Scroll animations
-        const sections = document.querySelectorAll('section');
-        
-        sections.forEach(section => {
-            gsap.from(section, {
-                scrollTrigger: {
-                    trigger: section,
-                    start: "top 80%",
-                    toggleActions: "play none none none"
-                },
-                opacity: 0,
-                y: 50,
-                duration: 1
-            });
-        });
-        
-        // Mobile menu toggle
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        mobileMenuButton.addEventListener('click', () => {
-            // Implement mobile menu functionality here
-            console.log('Mobile menu clicked');
         });
     </script>
-    document.querySelector('form').addEventListener('submit', function(event) {
-        event.preventDefault();
-        const formData = new FormData(this);
-        fetch(this.action, {
-            method: this.method,
-            body: formData,
-            headers: {
-                'Accept': 'application/json'
-            }
-        }).then(response => {
-            if (response.ok) {
-                window.location.hash = '#home';
-            } else {
-                alert('There was an error submitting the form.');
-            }
-        }).catch(error => {
-            console.error('Error:', error);
-            alert('There was an error submitting the form.');
-        });
-    });
+    
 </body>
 </html>
