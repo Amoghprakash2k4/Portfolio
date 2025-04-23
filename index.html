@@ -80,6 +80,44 @@
             color: transparent;
         }
     </style>
+    <style>
+        .toast-notification {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 1000;
+        }
+        
+        .toast-notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .toast-notification.success {
+            border-left: 4px solid #4ade80;
+        }
+        
+        .toast-notification.error {
+            border-left: 4px solid #f87171;
+        }
+        
+        .toast-icon {
+            font-size: 24px;
+        }
+    </style>
 </head>
 <body class="bg-gradient-to-br from-gray-900 to-slate-900">
     <!-- 3D Canvas Container -->
@@ -553,5 +591,91 @@
         });
     </script>
     
+</body>
+</html>
+<div id="toast-container"></div>
+
+<script>
+    // Toast notification functions
+    function showToast(message, type = 'success') {
+        const toastContainer = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = `toast-notification ${type}`;
+        
+        const icon = type === 'success' ? 
+            '<i data-lucide="check-circle" class="toast-icon text-green-400"></i>' : 
+            '<i data-lucide="alert-circle" class="toast-icon text-red-400"></i>';
+            
+        toast.innerHTML = `
+            ${icon}
+            <span>${message}</span>
+        `;
+        
+        toastContainer.appendChild(toast);
+        
+        // Trigger animation
+        setTimeout(() => {
+            toast.classList.add('show');
+        }, 10);
+        
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => {
+                toast.remove();
+            }, 400);
+        }, 5000);
+    }
+
+    // Update your form submission handler
+    const contactForm = document.querySelector('form[action="https://formspree.io/f/mnnpedek"]');
+    
+    if (contactForm) {
+        contactForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            const submitButton = contactForm.querySelector('button[type="submit"]');
+            const originalButtonText = submitButton.textContent;
+            
+            try {
+                submitButton.disabled = true;
+                submitButton.textContent = 'Sending...';
+                
+                const formData = new FormData(contactForm);
+                const response = await fetch(contactForm.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const scrollPosition = window.scrollY; // Store current position
+                    showToast('Your message has been sent successfully!', 'success');
+                    contactForm.reset();
+                    setTimeout(() => {
+                        window.location.reload();
+                        window.scrollTo(0, scrollPosition); // Restore position
+                    }, 3000);
+                } else {
+                    const data = await response.json();
+                    const errorMsg = data.errors ? 
+                        data.errors.map(e => e.message).join(', ') : 
+                        'There was an error submitting your form';
+                    showToast(errorMsg, 'error');
+                }
+            } catch (error) {
+                showToast('Network error occurred. Please try again.', 'error');
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = originalButtonText;
+            }
+        });
+    }
+    
+    // Make sure to call this after creating icons
+    lucide.createIcons();
+</script>
 </body>
 </html>
