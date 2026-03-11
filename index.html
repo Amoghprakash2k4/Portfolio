@@ -3,54 +3,281 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amogh_P Portfolio</title>
+    <title>Amogh_P | Software Engineer</title>
+    <!-- Premium Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.152.1/build/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.152.1/examples/js/controls/OrbitControls.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.152.1/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
-            --primary: #6366f1;
-            --secondary: #a855f7;
-            --dark: #0f172a;
-            --light: #f8fafc;
+            /* Ultra Premium Palette */
+            --primary: #fbbf24;    /* Electric Amber */
+            --secondary: #eab308;  /* Deep Gold */
+            --accent: #fcd34d;     /* Pale Glow */
+            --dark: #050505;       /* True Vantablack */
+            --graphite: #111111;   /* Graphite surface */
+            --light: #fefefe;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--dark);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #27272a;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3f3f46;
+        }
+
+        html.lenis {
+          height: auto;
+        }
+        .lenis.lenis-smooth {
+          scroll-behavior: auto;
+        }
+        .lenis.lenis-smooth [data-lenis-prevent] {
+          overscroll-behavior: contain;
+        }
+        .lenis.lenis-stopped {
+          overflow: hidden;
+        }
+
+        /* Custom Cursor */
+        *, *::before, *::after {
+            cursor: none !important;
+        }
+        
+        .cursor-dot {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 6px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+            box-shadow: 0 0 12px 3px rgba(251, 191, 36, 0.4);
+        }
+
+        .cursor-outline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 30px;
+            height: 30px;
+            border: 1px solid rgba(251, 191, 36, 0.5);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, background-color 0.2s, border-color 0.2s;
+            mix-blend-mode: difference;
+        }
+
+        .cursor-hover .cursor-dot {
+            width: 0;
+            height: 0;
+        }
+        .cursor-hover .cursor-outline {
+            width: 50px;
+            height: 50px;
+            background-color: rgba(251, 191, 36, 0.05);
+            border-color: rgba(251, 191, 36, 0.2);
+            backdrop-filter: blur(2px);
+        }
+
+        /* Ambient Background Glows */
+        .ambient-glow {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.4;
+            z-index: -2;
+            pointer-events: none;
+            animation: float 20s infinite ease-in-out alternate;
+        }
+        
+        .glow-1 {
+            background: var(--primary);
+            width: 40vw;
+            height: 40vw;
+            top: -10vw;
+            left: -10vw;
+        }
+        
+        .glow-2 {
+            background: var(--secondary);
+            width: 30vw;
+            height: 30vw;
+            bottom: -5vw;
+            right: -5vw;
+            animation-delay: -5s;
+        }
+        
+        .glow-3 {
+            background: var(--accent);
+            width: 35vw;
+            height: 35vw;
+            top: 40vh;
+            left: 30vw;
+            opacity: 0.2;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(5vw, 5vh) scale(1.1); }
+            100% { transform: translate(-5vw, -5vh) scale(0.9); }
+        }
+        
+        /* Cinematic Noise Overlay */
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9997;
+            opacity: 0.12;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            mix-blend-mode: overlay;
         }
         
         body {
-            overflow-x: hidden;
+            background-color: var(--dark);
             color: var(--light);
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            letter-spacing: -0.01em;
+            font-weight: 300;
         }
+
+        h1, h2, h3, h4, h5, h6, .outfit-font {
+            font-family: 'Outfit', sans-serif;
+            letter-spacing: -0.04em;
+            font-weight: 700;
+        }
+
         
         .canvas-container {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
             z-index: -1;
+            pointer-events: none; /* Let clicks pass through to the page */
         }
         
         .glass-card {
-            background: rgba(15, 23, 42, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: var(--graphite);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 8px; /* Sharper geometric corners */
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Mouse Tracking Glow Border for Cards */
+        .glass-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 8px;
+            padding: 1px;
+            background: radial-gradient(
+                800px circle at var(--mouse-x, 0) var(--mouse-y, 0), 
+                rgba(251, 191, 36, 0.4), /* Amber glow */
+                transparent 40%
+            );
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .glass-card:hover::before {
+            opacity: 1;
+        }
+
+        .glass-card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(
+                600px circle at var(--mouse-x, 0) var(--mouse-y, 0), 
+                rgba(255, 255, 255, 0.04),
+                transparent 40%
+            );
+            z-index: 0;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .glass-card:hover::after {
+            opacity: 1;
+        }
+        
+        .glass-card > * {
+            position: relative;
+            z-index: 2;
         }
         
         .glass-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+            border-color: rgba(251, 191, 36, 0.15);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.9), 0 0 30px rgba(251, 191, 36, 0.05);
+            transform: translateY(-8px) scale(1.02);
+        }
+        
+        /* Premium Magnetic Button Styling */
+        .magnetic-btn {
+            display: inline-flex;
+            position: relative;
+            z-index: 10;
         }
         
         .skill-pill {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            color: var(--light);
             transition: all 0.3s ease;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 500;
+            letter-spacing: 0.02em;
         }
         
         .skill-pill:hover {
+            border-color: var(--primary);
+            background: rgba(251, 191, 36, 0.1);
+            color: var(--primary);
             transform: scale(1.05);
         }
         
@@ -65,7 +292,7 @@
             height: 2px;
             bottom: -2px;
             left: 0;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            background: var(--primary);
             transition: width 0.3s ease;
         }
         
@@ -74,10 +301,7 @@
         }
         
         .hero-title {
-            background: linear-gradient(90deg, var(--light), #a5b4fc);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            color: var(--light);
         }
     </style>
     <style>
@@ -119,30 +343,40 @@
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-gray-900 to-slate-900">
+<body class="bg-[#050505] selection:bg-amber-500/30">
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- Cinematic Noise Overlay -->
+    <div class="noise-overlay"></div>
+
+    <!-- Ambient Glows -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+    <div class="ambient-glow glow-3"></div>
+
     <!-- 3D Canvas Container -->
     <div id="canvas-container" class="canvas-container"></div>
     
-    <!-- Floating Particles Background -->
-    <div id="particles-js"></div>
-    
     <!-- Navigation -->
-    <header class="fixed w-full z-50" style="background-color: var(--dark); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="text-3xl font-bold tracking-tight">
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-500">Portfolio</span>
+    <header class="fixed w-full z-50 transition-all duration-300" id="navbar" style="background: rgba(5, 5, 5, 0.7); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <nav class="container mx-auto px-6 py-6 flex justify-between items-center">
+            <div class="text-3xl font-extrabold tracking-tighter outfit-font">
+                <span class="text-white">AMOGH_<span class="text-amber-400">P</span></span>
             </div>
             
             <div class="hidden lg:flex space-x-8 items-center">
-                <a href="#home" class="nav-link text-lg font-medium">Home</a>
-                <a href="#about" class="nav-link text-lg font-medium">About</a>
-                <a href="#projects" class="nav-link text-lg font-medium">Projects</a>
-                <a href="#contact" class="nav-link text-lg font-medium">Contact</a>
+                <div class="magnetic-btn"><a href="#home" class="nav-link text-lg font-medium text-gray-300 hover:text-white transition-colors">Home</a></div>
+                <div class="magnetic-btn"><a href="#about" class="nav-link text-lg font-medium text-gray-300 hover:text-white transition-colors">About</a></div>
+                <div class="magnetic-btn"><a href="#projects" class="nav-link text-lg font-medium text-gray-300 hover:text-white transition-colors">Projects</a></div>
+                <div class="magnetic-btn"><a href="#contact" class="nav-link text-lg font-medium text-gray-300 hover:text-white transition-colors">Contact</a></div>
 
-                <a href="Amogh_P.pdf" download class="ml-4 px-6 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full hover:shadow-lg transition-all duration-300">
-
-                    Download CV
-                </a>
+                <div class="magnetic-btn">
+                    <a href="Amogh_P.pdf" download class="ml-4 px-6 py-2 bg-white/10 border border-white/20 backdrop-blur-md text-white rounded-full hover:bg-white/20 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all duration-300">
+                        Download CV
+                    </a>
+                </div>
             </div>
             
             <button class="lg:hidden focus:outline-none" id="mobile-menu-button">
@@ -152,33 +386,38 @@
     </header>
 
 <!-- Hero Section -->
-<section id="home" class="min-h-screen flex items-center px-6">
-    <div class="container mx-auto">
-        <div class="max-w-3xl">
-            <h1 class="hero-title text-6xl md:text-8xl font-bold mb-6 leading-tight">
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-500 to-pink-500 animate-text">
-                    Amogh P
+<section id="home" class="min-h-screen flex items-center px-6 relative">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(251,191,36,0.08),transparent_50%)] pointer-events-none"></div>
+    <div class="container mx-auto relative z-10">
+        <div class="max-w-4xl">
+            <h1 class="hero-title text-5xl md:text-8xl lg:text-[7.5rem] font-black mb-8 leading-[0.9] tracking-tighter">
+                <span class="hero-text-1 text-white block">
+                    ENGINEERING
                 </span>
-                <span class="text-3xl md:text-5xl block mt-6 text-gray-300">
-                    Backend • Distributed Systems • Data
+                <span class="hero-text-2 text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-amber-400 to-orange-500 block">
+                    RELIABILITY
                 </span>
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-500 text-2xl md:text-4xl block mt-2">
-                    Building Reliable Systems at Scale
+                <span class="hero-text-3 text-white block">
+                    AT SCALE.
                 </span>
             </h1>
 
-            <p class="text-xl md:text-2xl mb-8 text-gray-300">
-                Backend engineer focused on <span class="text-indigo-400 font-medium">Java & Spring Boot</span>, 
-                building scalable microservices, event-driven systems, and production-grade data pipelines.
+            <p class="hero-text-4 text-xl md:text-2xl mb-12 text-gray-400 font-light max-w-2xl leading-relaxed">
+                Backend engineer focused on highly available <strong class="text-amber-400 font-medium">Java & Spring Boot</strong> architectures, 
+                distributed event-driven systems, and production-grade data pipelines.
             </p>
 
-            <div class="flex flex-wrap gap-4">
-                <a href="#projects" class="px-8 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full hover:shadow-lg transition-all duration-300 font-medium">
-                    View My Work
-                </a>
-                <a href="#contact" class="px-8 py-3 border border-indigo-400 text-indigo-400 rounded-full hover:bg-indigo-500 hover:text-white hover:border-transparent transition-all duration-300 font-medium">
-                    Let’s Connect
-                </a>
+            <div class="hero-buttons flex flex-wrap gap-6 mt-12">
+                <div class="magnetic-btn">
+                    <a href="#projects" class="px-8 py-5 bg-amber-400 text-black rounded-none hover:bg-amber-300 hover:shadow-[0_0_40px_rgba(251,191,36,0.3)] transition-all duration-300 font-bold tracking-wide text-lg flex items-center gap-3 uppercase outfit-font">
+                        Explore Work <i data-lucide="arrow-down-right" class="w-6 h-6"></i>
+                    </a>
+                </div>
+                <div class="magnetic-btn">
+                    <a href="#contact" class="px-8 py-5 border-2 border-white/20 text-white rounded-none hover:border-white transition-all duration-300 font-bold tracking-wide text-lg flex items-center gap-3 uppercase outfit-font">
+                        Let’s Talk <i data-lucide="mail" class="w-6 h-6"></i>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
@@ -412,136 +651,293 @@
         </div>
     </footer>
 
+    <div id="toast-container"></div>
+
     <script>
         // Initialize Lucide icons
         lucide.createIcons();
         
-        // Scroll animations for project cards with staggered effect
-        const projectCards = document.querySelectorAll('.glass-card');
+        // Initialize Lenis Smooth Scroll
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // Custom Cursor Logic
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        const pointer = new THREE.Vector2(); // For Three.js
         
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry, index) => {
-                if (entry.isIntersecting) {
-                    gsap.to(entry.target, {
-                        opacity: 1,
-                        y: 0,
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+            
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+            
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+            
+            pointer.x = (posX / window.innerWidth) * 2 - 1;
+            pointer.y = -(posY / window.innerHeight) * 2 + 1;
+        });
+
+        const iteractives = document.querySelectorAll('a, button, input, textarea, .glass-card, .skill-pill');
+        iteractives.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                document.body.classList.add('cursor-hover');
+            });
+            el.addEventListener('mouseleave', () => {
+                document.body.classList.remove('cursor-hover');
+            });
+        });
+
+        // Magnetic Buttons Logic
+        const magneticBtns = document.querySelectorAll('.magnetic-btn');
+        
+        magneticBtns.forEach(btn => {
+            const childContent = btn.querySelector('a');
+            
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                // Move button container stronger
+                gsap.to(btn, {
+                    x: x * 0.4,
+                    y: y * 0.4,
+                    duration: 0.8,
+                    ease: 'power3.out'
+                });
+                
+                // Move inner text even further for parallax
+                if(childContent) {
+                    gsap.to(childContent, {
+                        x: x * 0.2,
+                        y: y * 0.2,
                         duration: 0.8,
-                        delay: index * 0.15,
-                        ease: 'power2.out'
-                    });
-                } else {
-                    gsap.to(entry.target, {
-                        opacity: 0,
-                        y: 50,
-                        duration: 0.5,
-                        ease: 'power2.in'
+                        ease: 'power3.out'
                     });
                 }
             });
-        }, { threshold: 0.1 });
-        
-        projectCards.forEach((card, index) => {
-            gsap.set(card, { 
-                opacity: 0, 
-                y: 50,
-                delay: index * 0.1
+            
+            btn.addEventListener('mouseleave', () => {
+                // Return to center
+                gsap.to(btn, {
+                    x: 0,
+                    y: 0,
+                    duration: 1.2,
+                    ease: 'elastic.out(1, 0.3)'
+                });
+                
+                if(childContent) {
+                    gsap.to(childContent, {
+                        x: 0,
+                        y: 0,
+                        duration: 1.2,
+                        ease: 'elastic.out(1, 0.3)'
+                    });
+                }
             });
-            observer.observe(card);
+        });
+
+        // Mouse-Tracking Glow Cards Logic
+        document.getElementById("projects").onmousemove = e => {
+            for(const card of document.getElementsByClassName("glass-card")) {
+                const rect = card.getBoundingClientRect(),
+                      x = e.clientX - rect.left,
+                      y = e.clientY - rect.top;
+
+                card.style.setProperty("--mouse-x", `${x}px`);
+                card.style.setProperty("--mouse-y", `${y}px`);
+            }
+        };
+
+        // Initialize VanillaTilt
+        VanillaTilt.init(document.querySelectorAll(".glass-card"), {
+            max: 5,
+            speed: 400,
+            glare: true,
+            "max-glare": 0.2,
         });
         
-        // Enhanced Three.js Scene
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Scroll animations for project cards with staggered effect
+        const projectCards = document.querySelectorAll('.glass-card');
+        
+        projectCards.forEach((card, index) => {
+            gsap.fromTo(card, { opacity: 0, y: 50 }, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: "top 85%",
+                    toggleActions: "play none none none"
+                },
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                delay: (index % 3) * 0.15,
+                ease: 'power2.out'
+            });
+        });
+        
+        // Abstract Parallax Data Field
         const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ 
             antialias: true,
             alpha: true,
             powerPreference: "high-performance"
         });
         
-        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.outputEncoding = THREE.sRGBEncoding;
         document.getElementById('canvas-container').appendChild(renderer.domElement);
         
-        // Add floating particles with parallax effect
-        const particlesGeometry = new THREE.BufferGeometry();
-        const particleCount = 1000;
-        
-        const posArray = new Float32Array(particleCount * 3);
-        const originalPosArray = new Float32Array(particleCount * 3);
-        const speedArray = new Float32Array(particleCount);
-        
-        for(let i = 0; i < particleCount; i++) {
-            posArray[i*3] = (Math.random() - 0.5) * 10;
-            posArray[i*3+1] = (Math.random() - 0.5) * 10;
-            posArray[i*3+2] = (Math.random() - 0.5) * 10;
-            originalPosArray[i*3] = posArray[i*3];
-            originalPosArray[i*3+1] = posArray[i*3+1];
-            originalPosArray[i*3+2] = posArray[i*3+2];
-            speedArray[i] = 0.1 + Math.random() * 0.3;
-        }
-        
-        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-        
-        const particlesMaterial = new THREE.PointsMaterial({
-            size: 0.02,
-            color: 0x6366f1,
+        const group = new THREE.Group();
+        scene.add(group);
+
+        // 1. Massive Central Wireframe Pyramid
+        const pyramidGeo = new THREE.TetrahedronGeometry(15, 0); // 0 detail = tetrahedron (pyramid with triangular base)
+        const pyramidMat = new THREE.MeshBasicMaterial({
+            color: 0xfbbf24, // Amber
+            wireframe: true,
             transparent: true,
-            opacity: 0.8
+            opacity: 0.15
         });
+        const pyramid = new THREE.Mesh(pyramidGeo, pyramidMat);
+        pyramid.position.set(0, -2, -10);
+        group.add(pyramid);
         
-        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
-        scene.add(particlesMesh);
-        
-        // Parallax scroll effect
-        let scrollY = window.scrollY;
-        window.addEventListener('scroll', () => {
-            scrollY = window.scrollY;
-        });
-        
-        function animateParticles() {
-            for(let i = 0; i < particleCount; i++) {
-                posArray[i*3] = originalPosArray[i*3] + scrollY * speedArray[i] * 0.05;
-                posArray[i*3+1] = originalPosArray[i*3+1] + scrollY * speedArray[i] * 0.03;
-            }
-            particlesGeometry.attributes.position.needsUpdate = true;
-            requestAnimationFrame(animateParticles);
-        }
-        animateParticles();
-        
-        // Add animated torus knot
-        const geometry = new THREE.TorusKnotGeometry(0.5, 0.2, 100, 16);
-        const material = new THREE.MeshStandardMaterial({ 
-            color: 0x6366f1,
-            metalness: 0.7,
-            roughness: 0.2,
-            wireframe: false,
+        // 2. Inner Glowing Core
+        const coreGeo = new THREE.TetrahedronGeometry(6, 0);
+        const coreMat = new THREE.MeshBasicMaterial({
+            color: 0xeab308, // Gold
             transparent: true,
-            opacity: 0.9
+            opacity: 0.05,
+            wireframe: false
         });
+        const core = new THREE.Mesh(coreGeo, coreMat);
+        core.position.set(0, -2, -10);
+        group.add(core);
+
+        // 3. Floating Satellite Pyramids
+        const satelliteGroup = new THREE.Group();
+        group.add(satelliteGroup);
+        for(let i=0; i<15; i++) {
+            const tinyGeo = new THREE.TetrahedronGeometry(Math.random() * 2 + 1, 0);
+            const tinyMat = new THREE.MeshBasicMaterial({ color: 0xfbbf24, wireframe: true, transparent: true, opacity: 0.3 });
+            const tiny = new THREE.Mesh(tinyGeo, tinyMat);
+            
+            // Randomly scatter them around the main pyramid
+            const radius = 20 + Math.random() * 20;
+            const theta = Math.random() * Math.PI * 2;
+            const phi = Math.random() * Math.PI;
+            
+            tiny.position.set(
+                radius * Math.sin(phi) * Math.cos(theta),
+                radius * Math.sin(phi) * Math.sin(theta),
+                radius * Math.cos(phi) - 10
+            );
+            
+            tiny.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, 0);
+            
+            // Random spin speed for each satellite
+            tiny.userData.spinSpeedX = (Math.random() - 0.5) * 0.02;
+            tiny.userData.spinSpeedY = (Math.random() - 0.5) * 0.02;
+            
+            satelliteGroup.add(tiny);
+        }
+
+        // 4. Data Dust (Visible Particles)
+        const particleCount = 1500;
+        const positions = new Float32Array(particleCount * 3);
+        for (let i = 0; i < particleCount; i++) {
+            positions[i*3] = (Math.random() - 0.5) * 100;    
+            positions[i*3+1] = (Math.random() - 0.5) * 100;  
+            positions[i*3+2] = (Math.random() - 0.5) * 100 - 10;
+        }
+        const pointsGeo = new THREE.BufferGeometry();
+        pointsGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        const pointsMat = new THREE.PointsMaterial({
+            size: 0.08, // More visible
+            color: 0xffffff,
+            transparent: true,
+            opacity: 0.5,
+            blending: THREE.AdditiveBlending
+        });
+        const particles = new THREE.Points(pointsGeo, pointsMat);
+        scene.add(particles);
+
+        camera.position.set(0, 0, 15);
         
-        const torusKnot = new THREE.Mesh(geometry, material);
-        scene.add(torusKnot);
+        const clock = new THREE.Clock();
         
-        // Add ambient and directional light
-        const ambientLight = new THREE.AmbientLight(0x404040);
-        scene.add(ambientLight);
-        
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-        directionalLight.position.set(1, 1, 1);
-        scene.add(directionalLight);
-        
-        camera.position.z = 3;
-        
-        // Animation loop with GSAP
         gsap.ticker.add(() => {
-            torusKnot.rotation.x += 0.005;
-            torusKnot.rotation.y += 0.005;
+            const time = clock.getElapsedTime();
             
-            particlesMesh.rotation.y += 0.001;
+            // --- The POV Shift ---
             
+            // Scroll drives the camera *into* the 3D space (Z-axis) and upwards (Y-axis)
+            const targetZ = 15 - (window.scrollY * 0.02);
+            const targetY = (window.scrollY * 0.015);
+            
+            // Mouse aggressively drives the camera X orbit and Y tilt
+            const targetX = pointer.x * 12.0;
+            const targetTiltY = pointer.y * 8.0;
+
+            // Interpolate camera position for smooth, buttery flight
+            camera.position.x += (targetX - camera.position.x) * 0.03;
+            camera.position.y += ((targetY - targetTiltY) - camera.position.y) * 0.03;
+            camera.position.z += (targetZ - camera.position.z) * 0.03;
+
+            // Force camera to constantly look at the center of the giant pyramid
+            // This creates the massive perspective distortion (POV shift)
+            camera.lookAt(pyramid.position);
+            
+            // Slowly rotate the massive pyramid
+            pyramid.rotation.y = time * 0.05;
+            pyramid.rotation.x = time * 0.02;
+            core.rotation.y = -time * 0.05;
+            core.rotation.x = -time * 0.02;
+            
+            // Rotate satellite group globally
+            satelliteGroup.rotation.y = time * 0.03;
+            satelliteGroup.rotation.z = Math.sin(time * 0.1) * 0.1;
+            
+            // Rotate individual satellites
+            satelliteGroup.children.forEach(child => {
+                child.rotation.x += child.userData.spinSpeedX;
+                child.rotation.y += child.userData.spinSpeedY;
+            });
+            
+            // Slowly churn the data dust
+            particles.rotation.y = time * 0.02;
+
             renderer.render(scene, camera);
         });
+        
+        // Hero Section Staggered Entrance Animation
+        gsap.from(".hero-text-1", { y: 40, opacity: 0, duration: 1.2, ease: "power4.out", delay: 0.2 });
+        gsap.from(".hero-text-2", { y: 30, opacity: 0, duration: 1.2, ease: "power4.out", delay: 0.4 });
+        gsap.from(".hero-text-3", { y: 20, opacity: 0, duration: 1.2, ease: "power4.out", delay: 0.6 });
+        gsap.from(".hero-text-4", { y: 20, opacity: 0, duration: 1.2, ease: "power4.out", delay: 0.8 });
+        gsap.from(".hero-buttons", { y: 20, opacity: 0, duration: 1.2, ease: "power4.out", delay: 1.0 });
         
         // Handle window resize
         window.addEventListener('resize', () => {
@@ -582,12 +978,16 @@
             gsap.from(section, {
                 scrollTrigger: {
                     trigger: section,
-                    start: "top 80%",
-                    toggleActions: "play none none none"
+                    start: "top 85%",
+                    toggleActions: "play none none reverse"
                 },
                 opacity: 0,
-                y: 50,
-                duration: 1
+                y: 120,
+                scale: 0.9,
+                rotationX: 5,
+                transformOrigin: "center top",
+                duration: 1.5,
+                ease: "expo.out"
             });
         });
         
@@ -620,10 +1020,6 @@
             });
         });
     </script>
-    
-</body>
-</html>
-<div id="toast-container"></div>
 
 <script>
     // Toast notification functions
