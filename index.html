@@ -894,8 +894,9 @@
             // --- The POV Shift ---
             
             // Scroll drives the camera *into* the 3D space (Z-axis) and upwards (Y-axis)
-            const targetZ = 15 - (window.scrollY * 0.02);
-            const targetY = (window.scrollY * 0.015);
+            // Increased the scroll multiplier significantly to make the pyramids move faster
+            const targetZ = 15 - (window.scrollY * 0.08);
+            const targetY = (window.scrollY * 0.06);
             
             // Mouse aggressively drives the camera X orbit and Y tilt
             const targetX = pointer.x * 12.0;
