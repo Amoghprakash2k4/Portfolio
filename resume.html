@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Amogh Prakash - Resume</title>
+    <style>
+        @page {
+            size: letter;
+            margin: 0.5in 0.55in;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            color: #000;
+            background: #fff;
+            line-height: 1.35;
+            font-size: 10pt;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        .name {
+            font-size: 18pt;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .contact-info {
+            font-size: 8.5pt;
+            color: #111;
+            line-height: 1.4;
+        }
+        .contact-info a {
+            color: #000;
+            text-decoration: none;
+        }
+        .section {
+            margin-bottom: 11px;
+        }
+        .section-title {
+            font-size: 10pt;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1.2px solid #000;
+            padding-bottom: 1px;
+            margin-bottom: 6px;
+        }
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            font-size: 9.5pt;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+        .item-sub {
+            font-style: italic;
+            font-weight: 400;
+        }
+        .item-date {
+            font-weight: 700;
+            font-size: 9pt;
+            white-space: nowrap;
+        }
+        ul {
+            list-style-type: disc;
+            margin-left: 17px;
+            margin-bottom: 6px;
+        }
+        li {
+            font-size: 9pt;
+            margin-bottom: 3px;
+            text-align: justify;
+            color: #111;
+        }
+        .skills-category {
+            font-size: 9pt;
+            margin-bottom: 2.5px;
+            line-height: 1.35;
+        }
+        .skills-category strong {
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="name">AMOGH PRAKASH</div>
+        <div class="contact-info">
+            <a href="mailto:amogh.pwork@gmail.com">amogh.pwork@gmail.com</a> &nbsp;|&nbsp; <a href="https://amoghpportfolio.netlify.app">https://amoghpportfolio.netlify.app</a><br>
+            <a href="https://linkedin.com/in/amogh-prakash-93b585273">https://linkedin.com/in/amogh-prakash-93b585273</a> &nbsp;|&nbsp; <a href="https://github.com/Amoghprakash2k4">https://github.com/Amoghprakash2k4</a>
+        </div>
+    </div>
+
+    <!-- EXPERIENCE -->
+    <div class="section">
+        <div class="section-title">EXPERIENCE</div>
+        
+        <div class="item-header">
+            <div>
+                Backend Engineering Intern — <span class="item-sub">JAR (Digital Gold & Silver Investment Platform, Fintech)</span>
+            </div>
+            <div class="item-date">Jan 2026 — Jun 2026</div>
+        </div>
+        <ul>
+            <li>Owned the full lifecycle of a multi-tier module in a microservices platform using Java, Spring Boot, and design patterns; drove system design discussions and architected the backend architecture for the Silver Aggregation REST API (Java/J2EE, Web Services), cutting response time by 24% by consolidating 7 calls and optimizing algorithms, and enforced code review standards that raised system throughput.</li>
+            <li>Designed and built an independent, fault-tolerant autopay scheduling and execution engine in Java and Spring Boot with JWT authentication, applying distributed systems principles to decouple it from an existing flow and support scalability for recurring UPI autopay mandates; processes 250+ daily transactions worth ₹8 lakh per month.</li>
+            <li>Implemented a multi-condition eligibility rule engine in Java 17 against production SQL and Mongo data stores, applying OOP, data structures, and algorithms to the coding and design, with JSON rule payloads and JUnit unit and integration tests; unlocked access for 10% of eligible users, adding ₹2.5 lakh in daily collections.</li>
+            <li>Took ownership of recurring production issues on a live 24x7 platform: performed debugging and troubleshooting with logs and telemetry, fixed vulnerabilities surfaced in security scans, joined RCA discussions, and built Elastic, Grafana, and Kibana dashboards that reduced MTTR by 30%.</li>
+            <li>Deployed the platform to production systems on AWS, leveraging cloud infrastructure and data platforms with Docker and Kubernetes, safely rolling out schema migrations with controlled feature releases.</li>
+            <li>Used AI coding assistants with prompt engineering across the software development lifecycle for scaffolding and unit test generation, reviewing every AI-generated change through code review before deployment; cut development time by ~25%.</li>
+        </ul>
+    </div>
+
+    <!-- PROJECTS -->
+    <div class="section">
+        <div class="section-title">PROJECTS</div>
+
+        <div class="item-header">
+            <div>
+                Distributed Real-Time Processing Engine — <span class="item-sub">Java, Python, Kafka, PySpark, MySQL, MongoDB, PostgreSQL</span>
+            </div>
+        </div>
+        <ul>
+            <li>Designed a scalable, cloud-native data engineering platform using Kafka and PySpark pipelines, processing 86.4 million events per day through stateless services for multi-tier ingestion, transformation, and routing; enabled real-time analytics on streaming data and cut data latency by 35% through algorithm and data-structure optimization.</li>
+            <li>Architected a fault-tolerant system with exactly-once semantics and automatic recovery, using a dual-database design (SQL and NoSQL) chosen by query pattern for cost and scalability.</li>
+            <li>Built data science-ready pipelines feeding cleaned, transformed event data to analytics consumers, enabling metrics-based dashboards and visualization for 2 downstream business reports.</li>
+        </ul>
+
+        <div class="item-header" style="margin-top: 4px;">
+            <div>
+                Kirana Register — <span class="item-sub">Java, PostgreSQL, Redis, Kafka, Git, GitHub Actions</span>
+            </div>
+        </div>
+        <ul>
+            <li>Independently built an end-to-end microservices platform handling 50,000+ monthly transactions, with Kafka messaging pipelines and idempotent message handling for fault tolerance.</li>
+            <li>Modeled PostgreSQL schemas and a Redis caching layer for low-latency data access; wrote unit, regression, and integration tests achieving 91% coverage, enforced through an automated GitHub Actions build-and-test pipeline for full test automation.</li>
+        </ul>
+    </div>
+
+    <!-- TECHNICAL SKILLS -->
+    <div class="section">
+        <div class="section-title">TECHNICAL SKILLS</div>
+        <div class="skills-category"><strong>Languages:</strong> Java, Python, C++, JavaScript, SQL</div>
+        <div class="skills-category"><strong>Big Data & Messaging:</strong> Apache Spark (PySpark), Hadoop, Kafka, Event-Driven Architecture, Fault Tolerance, Stateless Services</div>
+        <div class="skills-category"><strong>Backend & Systems Design:</strong> Microservices, Distributed Systems, Multi-Tier Architecture, REST APIs, Spring Boot, Low-Level Design (LLD), Object-Oriented Design, Design Patterns, Data Structures & Algorithms, Cloud-Native Architecture</div>
+        <div class="skills-category"><strong>Cloud & Databases:</strong> AWS, Docker, Kubernetes, SQL (MySQL, PostgreSQL), NoSQL (MongoDB, Redis)</div>
+        <div class="skills-category"><strong>Practices & Tools:</strong> JUnit, Unit/Regression/Integration Testing, CI/CD (GitHub Actions, Jenkins), DevOps, Git, Agile/Scrum, Code Review, On-Call Support, RCA & Incident Management, Production Debugging, Observability (Elastic, Grafana, Kibana).</div>
+        <div class="skills-category"><strong>AI-Assisted Development:</strong> GitHub Copilot, Cursor, VSCode, ChatGPT, Claude Code, OpenAI Codex.</div>
+    </div>
+
+    <!-- EDUCATION -->
+    <div class="section">
+        <div class="section-title">EDUCATION</div>
+        <div class="item-header">
+            <div>PES University — <span class="item-sub">Bachelor of Tech in Computer Science and Engineering</span></div>
+            <div class="item-date">Jun 2026</div>
+        </div>
+        <div style="font-size: 8.5pt; margin-bottom: 4px; color: #222;">CGPA 8.3/10.0</div>
+
+        <div class="item-header">
+            <div>Siddaganga PU College — <span class="item-sub">Higher Secondary Education</span></div>
+            <div class="item-date">May 2022</div>
+        </div>
+        <div style="font-size: 8.5pt; color: #222;">94%</div>
+    </div>
+
+</body>
+</html>
