@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AMOGH PRAKASH // BACKEND, DATA & DISTRIBUTED SYSTEMS ENGINEER</title>
+    <title>Amogh Prakash // Backend, Data & Distributed Systems Engineer</title>
     
     <!-- Premium Google Fonts: Mondragon Aesthetic (Syne, JetBrains Mono, Inter, Outfit) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -77,11 +77,20 @@
             --mouse-y: 50%;
         }
 
+        html {
+            overflow-x: hidden !important;
+            max-width: 100% !important;
+            width: 100% !important;
+        }
+
         body {
             background-color: var(--bg-dark);
             color: #f3f4f6;
             font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
+            overflow-x: hidden !important;
+            max-width: 100% !important;
+            width: 100% !important;
+            position: relative;
             -webkit-font-smoothing: antialiased;
         }
 
@@ -164,18 +173,22 @@
             right: 8px;
         }
 
-        /* Interactive Marquee */
-        @keyframes marquee {
-            0% { transform: translateX(0%); }
-            100% { transform: translateX(-50%); }
-        }
-        .animate-marquee {
+        /* Gotham-Style Telemetry Stream (RAF Driven) */
+        #ticker-track {
             display: flex;
             width: max-content;
-            animation: marquee 35s linear infinite;
+            will-change: transform;
         }
-        .animate-marquee:hover {
-            animation-play-state: paused;
+
+        /* Palantir Gotham Card Focus on Scroll */
+        .mondragon-card.gotham-focused {
+            border-color: rgba(0, 152, 234, 0.5) !important;
+            box-shadow: 0 20px 45px -12px rgba(0, 0, 0, 0.95), 0 0 32px rgba(0, 152, 234, 0.22) !important;
+        }
+        .mondragon-card.gotham-focused .crosshair-corner::before,
+        .mondragon-card.gotham-focused .crosshair-corner::after {
+            color: #0098ea !important;
+            text-shadow: 0 0 6px rgba(0, 152, 234, 0.85);
         }
 
         /* 3D Canvas fixed background */
@@ -183,8 +196,8 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
+            width: 100%;
+            height: 100%;
             z-index: 0;
             pointer-events: none;
             opacity: 0.45;
@@ -284,8 +297,10 @@
             opacity: 0;
         }
     </style>
+
 </head>
 <body class="bg-[#030407] text-gray-200 antialiased selection:bg-[#ff1361] selection:text-white">
+
 
     <!-- Interactive Cursor -->
     <div class="cursor-dot hidden md:block"></div>
@@ -302,37 +317,37 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
             
             <!-- Brand / Coordinates & Status Badge -->
-            <a href="#home" class="flex items-center gap-3 shrink-0 group" onclick="scrollToTop(event)">
-                <span class="w-2.5 h-2.5 bg-[#ff1361] block transition-transform group-hover:rotate-45 shadow-[0_0_10px_rgba(255,19,97,0.6)]"></span>
+            <a href="#home" class="flex items-center gap-2.5 sm:gap-3 shrink-0 group" onclick="scrollToTop(event)">
+                <span class="w-2.5 h-2.5 bg-[#ff1361] shrink-0 block transition-transform group-hover:rotate-45 shadow-[0_0_10px_rgba(255,19,97,0.6)]"></span>
                 <div>
                     <div class="flex items-center gap-2">
-                        <span class="font-syne font-black text-base sm:text-lg tracking-wider text-white">AMOGH_PRAKASH</span>
-                        <span class="hidden sm:inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-mono tracking-wider">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>AVAILABLE
+                        <span class="font-syne font-black text-sm sm:text-lg tracking-wider text-white">AMOGH_PRAKASH</span>
+                        <span id="gotham-status-badge" class="hidden sm:inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-mono tracking-wider shrink-0 transition-all duration-300">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span><span id="gotham-status-text">AVAILABLE</span>
                         </span>
                     </div>
-                    <span class="block font-mono text-[10px] text-zinc-400 tracking-widest uppercase">BACKEND, DATA & DISTRIBUTED SYSTEMS</span>
+                    <span id="gotham-context-marker" class="hidden sm:block font-mono text-[10px] text-zinc-400 tracking-widest uppercase transition-all duration-300">BACKEND, DATA & DISTRIBUTED SYSTEMS</span>
                 </div>
             </a>
 
             <!-- Desktop Nav Links -->
-            <nav class="hidden lg:flex items-center gap-5 xl:gap-6 font-mono text-[11px] xl:text-xs tracking-wider uppercase">
-                <a href="#about" class="text-zinc-400 hover:text-sky-400 transition-colors" onclick="playSfx('click')">
+            <nav id="desktop-nav" class="hidden lg:flex items-center gap-5 xl:gap-6 font-mono text-[11px] xl:text-xs tracking-wider uppercase">
+                <a href="#about" data-nav="about" class="nav-item text-zinc-400 hover:text-sky-400 transition-colors" onclick="playSfx('click')">
                     ABOUT
                 </a>
-                <a href="#experience" class="text-[#ff1361] hover:text-white transition-colors flex items-center gap-1" onclick="playSfx('click')">
+                <a href="#experience" data-nav="experience" class="nav-item text-[#ff1361] hover:text-white transition-colors flex items-center gap-1" onclick="playSfx('click')">
                     <span class="text-zinc-500">//</span> JAR FINTECH
                 </a>
-                <a href="#simulator" class="text-zinc-400 hover:text-sky-400 transition-colors" onclick="playSfx('click')">
+                <a href="#simulator" data-nav="simulator" class="nav-item text-zinc-400 hover:text-sky-400 transition-colors" onclick="playSfx('click')">
                     SIMULATOR
                 </a>
-                <a href="#capabilities" class="text-zinc-400 hover:text-sky-400 transition-colors" onclick="playSfx('click')">
+                <a href="#capabilities" data-nav="capabilities" class="nav-item text-zinc-400 hover:text-sky-400 transition-colors" onclick="playSfx('click')">
                     STACK
                 </a>
-                <a href="#projects" class="text-zinc-400 hover:text-sky-400 transition-colors" onclick="playSfx('click')">
+                <a href="#projects" data-nav="projects" class="nav-item text-zinc-400 hover:text-sky-400 transition-colors" onclick="playSfx('click')">
                     WORK
                 </a>
-                <a href="#contact" class="text-zinc-400 hover:text-sky-400 transition-colors" onclick="playSfx('click')">
+                <a href="#contact" data-nav="contact" class="nav-item text-zinc-400 hover:text-sky-400 transition-colors" onclick="playSfx('click')">
                     CONTACT
                 </a>
             </nav>
@@ -370,20 +385,28 @@
                 </a>
             </div>
 
-            <!-- Mobile Hamburger Button -->
-            <button id="mobile-menu-btn" class="md:hidden text-zinc-300 hover:text-white p-2">
-                <i data-lucide="menu" class="w-6 h-6"></i>
-            </button>
+            <!-- Mobile Controls: CV Pill + Hamburger Button -->
+            <div class="flex md:hidden items-center gap-2 shrink-0">
+                <a href="AmoghP.pdf" download="Amogh_P_Resume.pdf" onclick="playSfx('click')"
+                   class="px-2.5 py-1.5 bg-[#ff1361] text-white font-mono font-bold text-[10px] uppercase tracking-wider flex items-center gap-1 shadow-[0_0_12px_rgba(255,19,97,0.4)]">
+                    <span>CV</span>
+                    <i data-lucide="download" class="w-3 h-3"></i>
+                </a>
+                <button id="mobile-menu-btn" aria-label="Toggle navigation menu"
+                        class="p-2 border border-white/15 bg-white/[0.04] text-zinc-300 hover:text-white hover:border-sky-400 transition-colors flex items-center justify-center w-9 h-9">
+                    <i data-lucide="menu" class="w-5 h-5"></i>
+                </button>
+            </div>
         </div>
 
         <!-- Mobile Drawer -->
         <div id="mobile-menu" class="hidden md:hidden bg-[#070a12] border-b border-white/10 px-6 py-6 font-mono text-sm space-y-4">
-            <a href="#about" class="block text-zinc-300 hover:text-sky-400 py-1">[01] ABOUT</a>
-            <a href="#experience" class="block text-[#ff1361] hover:underline py-1">[02] JAR FINTECH EXPERIENCE</a>
-            <a href="#simulator" class="block text-zinc-300 hover:text-sky-400 py-1">[⚡] LIVE PIPELINE SIMULATOR</a>
-            <a href="#capabilities" class="block text-zinc-300 hover:text-sky-400 py-1">[03] STACK & CAPABILITIES</a>
-            <a href="#projects" class="block text-zinc-300 hover:text-sky-400 py-1">[04] FEATURED WORK</a>
-            <a href="#contact" class="block text-zinc-300 hover:text-sky-400 py-1">[05] CONTACT</a>
+            <a href="#about" data-mobile-nav="about" class="mobile-nav-item block text-zinc-300 hover:text-sky-400 py-1 transition-colors">[01] ABOUT</a>
+            <a href="#experience" data-mobile-nav="experience" class="mobile-nav-item block text-[#ff1361] hover:underline py-1 transition-colors">[02] JAR FINTECH EXPERIENCE</a>
+            <a href="#simulator" data-mobile-nav="simulator" class="mobile-nav-item block text-zinc-300 hover:text-sky-400 py-1 transition-colors">[⚡] LIVE PIPELINE SIMULATOR</a>
+            <a href="#capabilities" data-mobile-nav="capabilities" class="mobile-nav-item block text-zinc-300 hover:text-sky-400 py-1 transition-colors">[03] STACK & CAPABILITIES</a>
+            <a href="#projects" data-mobile-nav="projects" class="mobile-nav-item block text-zinc-300 hover:text-sky-400 py-1 transition-colors">[04] FEATURED WORK</a>
+            <a href="#contact" data-mobile-nav="contact" class="mobile-nav-item block text-zinc-300 hover:text-sky-400 py-1 transition-colors">[05] CONTACT</a>
             <div class="flex items-center gap-3 pt-3">
                 <button onclick="toggleCliDrawer()" class="px-3 py-2 border border-white/20 text-xs text-white flex items-center gap-2">
                     <i data-lucide="terminal" class="w-4 h-4"></i> OPEN CLI
@@ -400,6 +423,11 @@
                 </a>
             </div>
         </div>
+
+        <!-- Header Interactive Scroll Progress Bar (Cerulean to Neon Rose) -->
+        <div id="scroll-progress-container" class="absolute bottom-0 left-0 w-full h-[2px] bg-white/[0.04] overflow-hidden pointer-events-none">
+            <div id="scroll-progress-bar" class="h-full w-0 bg-gradient-to-r from-sky-400 via-[#0098ea] to-[#ff1361] shadow-[0_0_10px_rgba(0,152,234,0.8)] transition-[width] duration-75 ease-out"></div>
+        </div>
     </header>
 
     <main class="relative z-10 pt-20">
@@ -407,20 +435,20 @@
         <!-- ============================================== -->
         <!-- SECTION 01: HERO / MONDRAGON STUDIO INTRO -->
         <!-- ============================================== -->
-        <section id="home" class="min-h-[92vh] flex flex-col justify-center px-6 relative border-b border-white/[0.08] bg-grid-pattern">
+        <section id="home" class="min-h-[92vh] flex flex-col justify-center px-4 sm:px-6 relative border-b border-white/[0.08] bg-grid-pattern">
             <div class="max-w-7xl mx-auto w-full py-16 lg:py-24">
                 
                 <!-- Terminal Meta Header -->
-                <div class="flex flex-wrap items-center gap-3 font-mono text-xs text-sky-400/90 mb-8 uppercase tracking-widest">
-                    <span class="px-2 py-0.5 bg-sky-500/10 border border-sky-500/30 text-sky-400">[INDEX // 000]</span>
-                    <span class="text-zinc-400">//</span>
-                    <span>BACKEND, DATA SYSTEMS & DISTRIBUTED ARCHITECT</span>
-                    <span class="text-zinc-400">//</span>
-                    <span class="text-zinc-400">EX-JAR FINTECH INTERN • PES UNIVERSITY CSE</span>
+                <div class="flex flex-wrap items-center gap-2 sm:gap-3 font-mono text-[10px] sm:text-xs text-sky-400/90 mb-6 sm:mb-8 uppercase tracking-wider sm:tracking-widest">
+                    <span class="px-2 py-0.5 bg-sky-500/10 border border-sky-500/30 text-sky-400 font-bold shrink-0">[INDEX // 000]</span>
+                    <span class="hidden xs:inline text-zinc-400">//</span>
+                    <span class="shrink-0">BACKEND, DATA SYSTEMS & ARCHITECTURE</span>
+                    <span class="hidden sm:inline text-zinc-400">//</span>
+                    <span class="text-zinc-400 hidden sm:inline">EX-JAR FINTECH INTERN • PES CSE</span>
                 </div>
 
                 <!-- Massive Editorial Headline (Mondragon Style) -->
-                <h1 class="font-syne font-black text-5xl sm:text-7xl lg:text-[6.8rem] leading-[0.92] tracking-tighter uppercase text-white mb-8">
+                <h1 class="font-syne font-black text-[1.95rem] xs:text-[2.25rem] sm:text-6xl md:text-7xl lg:text-[6.8rem] leading-[0.92] tracking-tighter uppercase text-white mb-6 sm:mb-8">
                     ENGINEERING <br>
                     <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-[#0098ea] to-[#ff1361]">
                         RELIABILITY
@@ -429,75 +457,78 @@
                 </h1>
 
                 <!-- Thesis Statement with Audited Metrics -->
-                <p class="text-lg sm:text-2xl text-zinc-400 max-w-3xl font-light leading-relaxed mb-12">
+                <p class="text-base sm:text-xl lg:text-2xl text-zinc-400 max-w-3xl font-light leading-relaxed mb-8 sm:mb-12">
                     Backend & Data Engineer experienced in architecting mission-critical fintech microservices with <strong class="text-white font-medium">Java & Spring Boot</strong> at JAR, 
                     scaling distributed data pipelines to <strong class="text-[#ff1361] font-semibold">86.4M events/day</strong> with <strong class="text-sky-400 font-medium">Apache Kafka & PySpark</strong>, and building fault-tolerant, high-throughput data platforms.
                 </p>
 
                 <!-- Dual Action Call-To-Actions & Interactive Jumpers -->
-                <div class="flex flex-wrap items-center gap-5 font-mono text-xs tracking-wider uppercase mb-16">
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-5 font-mono text-xs tracking-wider uppercase mb-12 sm:mb-16">
                     <a href="#experience" onclick="playSfx('click')"
-                       class="px-8 py-4 bg-[#ff1361] text-white hover:bg-[#ff2a7a] font-bold transition-all duration-300 flex items-center gap-3 border border-[#ff1361] shadow-[0_0_25px_rgba(255,19,97,0.35)]">
-                        VIEW JAR FINTECH IMPACT <i data-lucide="arrow-down-right" class="w-4 h-4"></i>
+                       class="px-6 sm:px-8 py-3.5 sm:py-4 bg-[#ff1361] text-white hover:bg-[#ff2a7a] font-bold transition-all duration-300 flex items-center justify-center gap-3 border border-[#ff1361] shadow-[0_0_25px_rgba(255,19,97,0.35)] text-center">
+                        <span>VIEW JAR FINTECH IMPACT</span>
+                        <i data-lucide="arrow-down-right" class="w-4 h-4 shrink-0"></i>
                     </a>
                     <a href="#simulator" onclick="playSfx('burst')"
-                       class="px-8 py-4 border border-sky-400/40 bg-sky-500/10 hover:border-sky-400 hover:text-white text-sky-400 font-medium transition-all duration-300 flex items-center gap-3 shadow-[0_0_20px_rgba(0,152,234,0.15)]">
-                        KAFKA SIMULATOR <i data-lucide="zap" class="w-4 h-4 fill-current text-[#ff1361]"></i>
+                       class="px-6 sm:px-8 py-3.5 sm:py-4 border border-sky-400/40 bg-sky-500/10 hover:border-sky-400 hover:text-white text-sky-400 font-medium transition-all duration-300 flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(0,152,234,0.15)] text-center">
+                        <span>KAFKA SIMULATOR</span>
+                        <i data-lucide="zap" class="w-4 h-4 fill-current text-[#ff1361] shrink-0"></i>
                     </a>
                     <a href="AmoghP.pdf" download="Amogh_P_Resume.pdf" onclick="playSfx('click')"
-                       class="px-6 py-4 border border-zinc-700 hover:border-zinc-400 text-zinc-300 hover:text-white transition-all duration-300 flex items-center gap-2.5">
-                        <i data-lucide="download" class="w-4 h-4 text-sky-400"></i> GET RESUME [PDF]
+                       class="px-5 sm:px-6 py-3.5 sm:py-4 border border-zinc-700 hover:border-sky-400 text-zinc-300 hover:text-white transition-all duration-300 flex items-center justify-center gap-2.5 text-center">
+                        <i data-lucide="download" class="w-4 h-4 text-sky-400 shrink-0"></i>
+                        <span>GET RESUME [PDF]</span>
                     </a>
                 </div>
 
                 <!-- Mondragon Interactive Metrics & Telemetry Grid Strip (Grounded from Resume) -->
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-px bg-white/[0.08] border border-white/[0.08] font-mono">
-                    <div class="p-6 bg-[#070a12] flex flex-col justify-between hover:bg-white/[0.02] transition-colors cursor-pointer group" onclick="simulateMetricBurst(this)">
+                    <div class="p-4 sm:p-6 bg-[#070a12] flex flex-col justify-between hover:bg-white/[0.02] transition-colors cursor-pointer group" onclick="simulateMetricBurst(this)">
                         <div class="flex justify-between items-center">
-                            <span class="text-[10px] text-zinc-400 uppercase tracking-widest">[THROUGHPUT]</span>
+                            <span class="text-[9px] sm:text-[10px] text-zinc-400 uppercase tracking-widest">[THROUGHPUT]</span>
                             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                         </div>
                         <div class="my-2">
-                            <span class="font-syne font-black text-3xl sm:text-4xl text-white group-hover:text-sky-400 transition-colors">86.4M</span>
-                            <span class="text-xs text-sky-400 ml-1">EVENTS/DAY</span>
+                            <span class="font-syne font-black text-2xl sm:text-3xl lg:text-4xl text-white group-hover:text-sky-400 transition-colors">86.4M</span>
+                            <span class="text-[10px] sm:text-xs text-sky-400 ml-0.5 sm:ml-1">EVENTS/DAY</span>
                         </div>
-                        <span class="text-xs text-zinc-400">Kafka & PySpark data engine</span>
+                        <span class="text-[10px] sm:text-xs text-zinc-400 truncate">Kafka & PySpark engine</span>
                     </div>
 
-                    <div class="p-6 bg-[#070a12] flex flex-col justify-between hover:bg-white/[0.02] transition-colors cursor-pointer group" onclick="simulateMetricBurst(this)">
+                    <div class="p-4 sm:p-6 bg-[#070a12] flex flex-col justify-between hover:bg-white/[0.02] transition-colors cursor-pointer group" onclick="simulateMetricBurst(this)">
                         <div class="flex justify-between items-center">
-                            <span class="text-[10px] text-zinc-400 uppercase tracking-widest">[LATENCY CUT]</span>
+                            <span class="text-[9px] sm:text-[10px] text-zinc-400 uppercase tracking-widest">[LATENCY CUT]</span>
                             <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
                         </div>
                         <div class="my-2">
-                            <span class="font-syne font-black text-3xl sm:text-4xl text-white group-hover:text-sky-400 transition-colors">-24%</span>
-                            <span class="text-xs text-sky-400 ml-1">RESPONSE TIME</span>
+                            <span class="font-syne font-black text-2xl sm:text-3xl lg:text-4xl text-white group-hover:text-sky-400 transition-colors">-24%</span>
+                            <span class="text-[10px] sm:text-xs text-sky-400 ml-0.5 sm:ml-1">RESPONSE</span>
                         </div>
-                        <span class="text-xs text-zinc-400">JAR Silver Aggregation REST API</span>
+                        <span class="text-[10px] sm:text-xs text-zinc-400 truncate">JAR Aggregation REST API</span>
                     </div>
 
-                    <div class="p-6 bg-[#070a12] flex flex-col justify-between hover:bg-white/[0.02] transition-colors cursor-pointer group" onclick="simulateMetricBurst(this)">
+                    <div class="p-4 sm:p-6 bg-[#070a12] flex flex-col justify-between hover:bg-white/[0.02] transition-colors cursor-pointer group" onclick="simulateMetricBurst(this)">
                         <div class="flex justify-between items-center">
-                            <span class="text-[10px] text-zinc-400 uppercase tracking-widest">[FINTECH SCALE]</span>
+                            <span class="text-[9px] sm:text-[10px] text-zinc-400 uppercase tracking-widest">[FINTECH SCALE]</span>
                             <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
                         </div>
                         <div class="my-2">
-                            <span class="font-syne font-black text-3xl sm:text-4xl text-white group-hover:text-[#ff1361] transition-colors">₹8 LAKH</span>
-                            <span class="text-xs text-[#ff1361] ml-1">/ MONTH</span>
+                            <span class="font-syne font-black text-2xl sm:text-3xl lg:text-4xl text-white group-hover:text-[#ff1361] transition-colors">₹8 LAKH</span>
+                            <span class="text-[10px] sm:text-xs text-[#ff1361] ml-0.5 sm:ml-1">/ MO</span>
                         </div>
-                        <span class="text-xs text-zinc-400">UPI Autopay Engine at JAR</span>
+                        <span class="text-[10px] sm:text-xs text-zinc-400 truncate">UPI Autopay Engine</span>
                     </div>
 
-                    <div class="p-6 bg-[#070a12] flex flex-col justify-between hover:bg-white/[0.02] transition-colors cursor-pointer group" onclick="simulateMetricBurst(this)">
+                    <div class="p-4 sm:p-6 bg-[#070a12] flex flex-col justify-between hover:bg-white/[0.02] transition-colors cursor-pointer group" onclick="simulateMetricBurst(this)">
                         <div class="flex justify-between items-center">
-                            <span class="text-[10px] text-zinc-400 uppercase tracking-widest">[QUALITY & TEST]</span>
-                            <span class="text-[10px] text-emerald-400">CI/CD GATES</span>
+                            <span class="text-[9px] sm:text-[10px] text-zinc-400 uppercase tracking-widest">[QUALITY & TEST]</span>
+                            <span class="text-[9px] sm:text-[10px] text-emerald-400">CI/CD</span>
                         </div>
                         <div class="my-2">
-                            <span class="font-syne font-black text-3xl sm:text-4xl text-white group-hover:text-sky-400 transition-colors">91%</span>
-                            <span class="text-xs text-sky-400 ml-1">COVERAGE</span>
+                            <span class="font-syne font-black text-2xl sm:text-3xl lg:text-4xl text-white group-hover:text-sky-400 transition-colors">91%</span>
+                            <span class="text-[10px] sm:text-xs text-sky-400 ml-0.5 sm:ml-1">COVERAGE</span>
                         </div>
-                        <span class="text-xs text-zinc-400">Automated GitHub Actions pipelines</span>
+                        <span class="text-[10px] sm:text-xs text-zinc-400 truncate">GitHub Actions pipeline</span>
                     </div>
                 </div>
 
@@ -505,56 +536,66 @@
         </section>
 
         <!-- ============================================== -->
-        <!-- MARQUEE TICKER (Mondragon Specialty Ribbon) -->
+        <!-- MARQUEE TICKER (Gotham-Grade Telemetry Stream) -->
         <!-- ============================================== -->
-        <div class="py-4 border-b border-white/[0.08] bg-[#070a12] overflow-hidden whitespace-nowrap">
-            <div class="animate-marquee font-mono text-xs tracking-[0.25em] text-zinc-400 uppercase flex items-center gap-8">
-                <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#ff1361]"></span> JAR FINTECH PLATFORM</span>
-                <span class="text-zinc-600">//</span>
-                <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#0098ea]"></span> APACHE KAFKA & PYSPARK</span>
-                <span class="text-zinc-600">//</span>
-                <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#ff1361]"></span> JAVA 17 & SPRING BOOT</span>
-                <span class="text-zinc-600">//</span>
-                <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#0098ea]"></span> DOCKER & KUBERNETES</span>
-                <span class="text-zinc-600">//</span>
-                <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#ff1361]"></span> AWS ZERO-DOWNTIME RELEASES</span>
-                <span class="text-zinc-600">//</span>
-                <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#0098ea]"></span> ELASTIC, GRAFANA, KIBANA</span>
-                <span class="text-zinc-600">//</span>
-                <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#ff1361]"></span> UPI AUTOPAY MANDATES</span>
-                <span class="text-zinc-600">//</span>
-                <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#0098ea]"></span> REDIS CACHING & POSTGRESQL</span>
-                <span class="text-zinc-600">//</span>
-                <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#ff1361]"></span> JENKINS QUALITY GATES</span>
-                <span class="text-zinc-600">//</span>
-
-                <!-- Infinite loop duplicate -->
-                <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#ff1361]"></span> JAR FINTECH PLATFORM</span>
-                <span class="text-zinc-600">//</span>
-                <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#0098ea]"></span> APACHE KAFKA & PYSPARK</span>
-                <span class="text-zinc-600">//</span>
-                <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#ff1361]"></span> JAVA 17 & SPRING BOOT</span>
-                <span class="text-zinc-600">//</span>
-                <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#0098ea]"></span> DOCKER & KUBERNETES</span>
-                <span class="text-zinc-600">//</span>
-                <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#ff1361]"></span> AWS ZERO-DOWNTIME RELEASES</span>
-                <span class="text-zinc-600">//</span>
+        <div id="ticker-wrap" class="py-3.5 border-b border-white/[0.08] bg-[#070a12] w-full max-w-full overflow-hidden whitespace-nowrap relative select-none">
+            <div id="ticker-track" class="font-mono text-xs tracking-[0.25em] text-zinc-400 uppercase flex items-center will-change-transform">
+                <div class="ticker-content flex items-center gap-8 shrink-0 pr-8">
+                    <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#ff1361]"></span> JAR FINTECH PLATFORM</span>
+                    <span class="text-zinc-600">//</span>
+                    <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#0098ea]"></span> APACHE KAFKA & PYSPARK</span>
+                    <span class="text-zinc-600">//</span>
+                    <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#ff1361]"></span> JAVA 17 & SPRING BOOT</span>
+                    <span class="text-zinc-600">//</span>
+                    <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#0098ea]"></span> DOCKER & KUBERNETES</span>
+                    <span class="text-zinc-600">//</span>
+                    <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#ff1361]"></span> AWS ZERO-DOWNTIME RELEASES</span>
+                    <span class="text-zinc-600">//</span>
+                    <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#0098ea]"></span> ELASTIC, GRAFANA, KIBANA</span>
+                    <span class="text-zinc-600">//</span>
+                    <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#ff1361]"></span> UPI AUTOPAY MANDATES</span>
+                    <span class="text-zinc-600">//</span>
+                    <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#0098ea]"></span> REDIS CACHING & POSTGRESQL</span>
+                    <span class="text-zinc-600">//</span>
+                    <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#ff1361]"></span> JENKINS QUALITY GATES</span>
+                    <span class="text-zinc-600">//</span>
+                </div>
+                <div class="ticker-content flex items-center gap-8 shrink-0 pr-8" aria-hidden="true">
+                    <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#ff1361]"></span> JAR FINTECH PLATFORM</span>
+                    <span class="text-zinc-600">//</span>
+                    <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#0098ea]"></span> APACHE KAFKA & PYSPARK</span>
+                    <span class="text-zinc-600">//</span>
+                    <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#ff1361]"></span> JAVA 17 & SPRING BOOT</span>
+                    <span class="text-zinc-600">//</span>
+                    <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#0098ea]"></span> DOCKER & KUBERNETES</span>
+                    <span class="text-zinc-600">//</span>
+                    <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#ff1361]"></span> AWS ZERO-DOWNTIME RELEASES</span>
+                    <span class="text-zinc-600">//</span>
+                    <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#0098ea]"></span> ELASTIC, GRAFANA, KIBANA</span>
+                    <span class="text-zinc-600">//</span>
+                    <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#ff1361]"></span> UPI AUTOPAY MANDATES</span>
+                    <span class="text-zinc-600">//</span>
+                    <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#0098ea]"></span> REDIS CACHING & POSTGRESQL</span>
+                    <span class="text-zinc-600">//</span>
+                    <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#ff1361]"></span> JENKINS QUALITY GATES</span>
+                    <span class="text-zinc-600">//</span>
+                </div>
             </div>
         </div>
 
         <!-- ============================================== -->
         <!-- SECTION 02: ABOUT & ENGINEERING PHILOSOPHY -->
         <!-- ============================================== -->
-        <section id="about" class="py-24 px-6 border-b border-white/[0.08]">
+        <section id="about" class="py-16 sm:py-24 px-4 sm:px-6 border-b border-white/[0.08]">
             <div class="max-w-7xl mx-auto">
                 
                 <!-- Section Header -->
-                <div class="flex items-center justify-between pb-8 mb-16 border-b border-white/[0.08]">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 sm:pb-8 mb-10 sm:mb-16 border-b border-white/[0.08] gap-2 sm:gap-4">
                     <div class="flex items-center gap-3 font-mono text-xs text-sky-400 uppercase tracking-widest">
                         <span class="w-2 h-2 bg-[#ff1361]"></span>
                         <span>[001] // PHILOSOPHY & PROFILE</span>
                     </div>
-                    <span class="font-mono text-xs text-zinc-400 uppercase">PES UNIVERSITY CSE (CGPA 8.3) // BENGALURU</span>
+                    <span class="font-mono text-[11px] sm:text-xs text-zinc-400 uppercase">PES UNIVERSITY CSE (CGPA 8.3) // BENGALURU</span>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
@@ -581,25 +622,25 @@
                         </div>
 
                         <!-- Mini Spec Box -->
-                        <div class="mt-4 p-4 border border-white/10 bg-[#070a12] font-mono text-xs space-y-2 text-zinc-400">
-                            <div class="flex justify-between border-b border-white/5 pb-1">
-                                <span>EDUCATION</span>
+                        <div class="mt-4 p-4 border border-white/10 bg-[#070a12] font-mono text-xs space-y-2.5 text-zinc-400">
+                            <div class="flex flex-col sm:flex-row sm:justify-between border-b border-white/5 pb-1.5 gap-0.5 sm:gap-2">
+                                <span class="text-zinc-500 text-[11px] sm:text-xs">EDUCATION</span>
                                 <span class="text-white">PES University (B.Tech CSE, 8.3 CGPA)</span>
                             </div>
-                            <div class="flex justify-between border-b border-white/5 pb-1">
-                                <span>PRODUCTION EXPERIENCE</span>
+                            <div class="flex flex-col sm:flex-row sm:justify-between border-b border-white/5 pb-1.5 gap-0.5 sm:gap-2">
+                                <span class="text-zinc-500 text-[11px] sm:text-xs">PRODUCTION EXPERIENCE</span>
                                 <span class="text-[#ff1361] font-semibold">JAR (Fintech Investment Platform)</span>
                             </div>
-                            <div class="flex justify-between border-b border-white/5 pb-1">
-                                <span>PRIMARY TARGET ROLES</span>
+                            <div class="flex flex-col sm:flex-row sm:justify-between border-b border-white/5 pb-1.5 gap-0.5 sm:gap-2">
+                                <span class="text-zinc-500 text-[11px] sm:text-xs">PRIMARY TARGET ROLES</span>
                                 <span class="text-white">Backend &bull; Data Engineer &bull; Distributed Systems</span>
                             </div>
-                            <div class="flex justify-between border-b border-white/5 pb-1">
-                                <span>CONTACT EMAIL</span>
+                            <div class="flex flex-col sm:flex-row sm:justify-between border-b border-white/5 pb-1.5 gap-0.5 sm:gap-2">
+                                <span class="text-zinc-500 text-[11px] sm:text-xs">CONTACT EMAIL</span>
                                 <span class="text-white">amogh.pwork@gmail.com</span>
                             </div>
-                            <div class="flex justify-between">
-                                <span>STATUS</span>
+                            <div class="flex flex-col sm:flex-row sm:justify-between gap-0.5 sm:gap-2">
+                                <span class="text-zinc-500 text-[11px] sm:text-xs">STATUS</span>
                                 <span class="text-emerald-400">Available For Immediate Roles</span>
                             </div>
                         </div>
@@ -651,18 +692,18 @@
         <!-- ============================================== -->
         <!-- SECTION 03: JAR FINTECH PRODUCTION EXPERIENCE -->
         <!-- ============================================== -->
-        <section id="experience" class="py-24 px-6 border-b border-white/[0.08] bg-[#070a12]">
+        <section id="experience" class="py-16 sm:py-24 px-4 sm:px-6 border-b border-white/[0.08] bg-[#070a12]">
             <div class="max-w-7xl mx-auto">
                 
-                <div class="flex items-center justify-between pb-8 mb-16 border-b border-white/[0.08]">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 sm:pb-8 mb-10 sm:mb-16 border-b border-white/[0.08] gap-2 sm:gap-4">
                     <div class="flex items-center gap-3 font-mono text-xs text-sky-400 uppercase tracking-widest">
                         <span class="w-2 h-2 bg-[#ff1361]"></span>
                         <span>[002] // PRODUCTION ENGINEERING EXPERIENCE</span>
                     </div>
-                    <span class="font-mono text-xs text-emerald-400 uppercase">JAN 2026 — JUN 2026 // BENGALURU</span>
+                    <span class="font-mono text-[11px] sm:text-xs text-emerald-400 uppercase">JAN 2026 — JUN 2026 // BENGALURU</span>
                 </div>
 
-                <div class="mondragon-card border border-white/10 p-8 md:p-12">
+                <div class="mondragon-card border border-white/10 p-5 sm:p-8 md:p-12">
                     
                     <!-- Role Header -->
                     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-8 mb-8 border-b border-white/[0.08]">
@@ -792,21 +833,21 @@
         <!-- ============================================== -->
         <!-- SECTION 04: LIVE ARCHITECTURE & EVENT STREAM SIMULATOR -->
         <!-- ============================================== -->
-        <section id="simulator" class="py-24 px-6 border-b border-white/[0.08] bg-[#030407]">
+        <section id="simulator" class="py-16 sm:py-24 px-4 sm:px-6 border-b border-white/[0.08] bg-[#030407]">
             <div class="max-w-7xl mx-auto">
                 
                 <!-- Section Header -->
-                <div class="flex items-center justify-between pb-8 mb-12 border-b border-white/[0.08]">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 sm:pb-8 mb-8 sm:mb-12 border-b border-white/[0.08] gap-2 sm:gap-4">
                     <div class="flex items-center gap-3 font-mono text-xs text-sky-400 uppercase tracking-widest">
                         <span class="w-2 h-2 bg-[#ff1361] animate-pulse"></span>
                         <span>[INTERACTIVE SIMULATOR] // LIVE KAFKA & DISTRIBUTED PIPELINE</span>
                     </div>
-                    <span class="font-mono text-xs text-emerald-400 flex items-center gap-1.5">
+                    <span class="font-mono text-[11px] sm:text-xs text-emerald-400 flex items-center gap-1.5">
                         <span class="w-2 h-2 rounded-full bg-emerald-400"></span> 86.4M EVENTS/DAY CLUSTER
                     </span>
                 </div>
 
-                <div class="mondragon-card border border-white/10 p-6 md:p-8">
+                <div class="mondragon-card border border-white/10 p-4 sm:p-6 md:p-8">
                     
                     <!-- Simulator Controls Ribbon -->
                     <div class="flex flex-wrap items-center justify-between gap-4 pb-6 mb-8 border-b border-white/[0.08]">
@@ -966,7 +1007,7 @@
                             </div>
 
                             <!-- Live Auto-scrolling Event Log Container -->
-                            <div id="sim-log-stream" class="h-36 overflow-y-auto space-y-1 text-[11px] text-zinc-400 font-mono select-none pr-1">
+                            <div id="sim-log-stream" class="h-36 overflow-y-auto overflow-x-auto space-y-1 text-[10px] sm:text-[11px] text-zinc-400 font-mono select-none pr-1 whitespace-nowrap">
                                 <div><span class="text-emerald-400">[ACK]</span> <span class="text-zinc-300">offset: 82910</span> | part: 0 | id: jar_autopay_9812 | amt: ₹3,500 | UPI | lat: 3.2ms</div>
                                 <div><span class="text-emerald-400">[ACK]</span> <span class="text-zinc-300">offset: 82911</span> | part: 1 | id: jar_silver_9813 | amt: ₹500 | Gold/Silver | lat: 2.4ms</div>
                                 <div><span class="text-emerald-400">[ACK]</span> <span class="text-zinc-300">offset: 82912</span> | part: 2 | id: txn_kirana_9814 | amt: ₹1,200 | INR | lat: 2.8ms</div>
@@ -989,17 +1030,17 @@
         <!-- ============================================== -->
         <!-- SECTION 05: CAPABILITIES & TECH STACK MATRIX -->
         <!-- ============================================== -->
-        <section id="capabilities" class="py-24 px-6 border-b border-white/[0.08] bg-[#070a12]">
+        <section id="capabilities" class="py-16 sm:py-24 px-4 sm:px-6 border-b border-white/[0.08] bg-[#070a12]">
             <div class="max-w-7xl mx-auto">
                 
-                <div class="flex flex-wrap items-center justify-between pb-8 mb-12 border-b border-white/[0.08] gap-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 sm:pb-8 mb-8 sm:mb-12 border-b border-white/[0.08] gap-4">
                     <div class="flex items-center gap-3 font-mono text-xs text-sky-400 uppercase tracking-widest">
                         <span class="w-2 h-2 bg-[#ff1361]"></span>
                         <span>[003] // TECHNICAL SKILLS & COMPETENCY MATRIX</span>
                     </div>
 
-                    <!-- Category Filter Buttons -->
-                    <div class="flex flex-wrap items-center gap-2 font-mono text-xs">
+                    <!-- Category Filter Buttons (Swipeable on mobile, wrapping on tablet/desktop) -->
+                    <div class="flex sm:flex-wrap items-center gap-2 font-mono text-xs overflow-x-auto pb-2 sm:pb-0 max-w-full w-full">
                         <button onclick="filterTechCategory('all')" class="tech-filter-btn px-3 py-1.5 bg-[#ff1361] text-white font-semibold border border-[#ff1361] shadow-[0_0_15px_rgba(255,19,97,0.3)]" data-cat="all">ALL SKILLS</button>
                         <button onclick="filterTechCategory('lang')" class="tech-filter-btn px-3 py-1.5 bg-white/[0.03] text-zinc-400 hover:text-white border border-white/10" data-cat="lang">LANGUAGES</button>
                         <button onclick="filterTechCategory('dist')" class="tech-filter-btn px-3 py-1.5 bg-white/[0.03] text-zinc-400 hover:text-white border border-white/10" data-cat="dist">DATA ENGINEERING & STREAMING</button>
@@ -1162,20 +1203,20 @@
         <!-- ============================================== -->
         <!-- SECTION 06: FEATURED PROJECTS (Grounding from Resume) -->
         <!-- ============================================== -->
-        <section id="projects" class="py-24 px-6 border-b border-white/[0.08]">
+        <section id="projects" class="py-16 sm:py-24 px-4 sm:px-6 border-b border-white/[0.08]">
             <div class="max-w-7xl mx-auto">
                 
-                <div class="flex items-center justify-between pb-8 mb-16 border-b border-white/[0.08]">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 sm:pb-8 mb-10 sm:mb-16 border-b border-white/[0.08] gap-2 sm:gap-4">
                     <div class="flex items-center gap-3 font-mono text-xs text-sky-400 uppercase tracking-widest">
                         <span class="w-2 h-2 bg-[#ff1361]"></span>
                         <span>[004] // FEATURED ENGINEERING PROJECTS</span>
                     </div>
-                    <span class="font-mono text-xs text-zinc-400 uppercase">SYSTEM ARCHITECTURE SPECIMENS</span>
+                    <span class="font-mono text-[11px] sm:text-xs text-zinc-400 uppercase">SYSTEM ARCHITECTURE SPECIMENS</span>
                 </div>
 
                 <!-- Project 01: Distributed Real-Time Processing Engine -->
                 <div class="mondragon-card border border-white/10 mb-16 overflow-hidden">
-                    <div class="p-6 md:p-8 border-b border-white/[0.08] flex flex-wrap items-center justify-between gap-4 bg-white/[0.01]">
+                    <div class="p-4 sm:p-6 md:p-8 border-b border-white/[0.08] flex flex-wrap items-center justify-between gap-3 sm:gap-4 bg-white/[0.01]">
                         <div class="flex items-center gap-3 font-mono text-xs">
                             <span class="px-2.5 py-1 bg-sky-500 text-black font-bold font-mono">PROJECT 01</span>
                             <span class="text-zinc-400">//</span>
@@ -1203,7 +1244,7 @@
                         </div>
 
                         <!-- Technical Deep-Dive -->
-                        <div class="lg:col-span-7 p-6 md:p-10 flex flex-col justify-between">
+                        <div class="lg:col-span-7 p-5 sm:p-6 md:p-10 flex flex-col justify-between">
                             <div>
                                 <h3 class="font-syne font-black text-3xl sm:text-4xl text-white uppercase tracking-tight mb-4">
                                     Distributed Real-Time Processing Engine
@@ -1248,7 +1289,7 @@
 
                 <!-- Project 02: Kirana Register -->
                 <div class="mondragon-card border border-white/10 mb-16 overflow-hidden">
-                    <div class="p-6 md:p-8 border-b border-white/[0.08] flex flex-wrap items-center justify-between gap-4 bg-white/[0.01]">
+                    <div class="p-4 sm:p-6 md:p-8 border-b border-white/[0.08] flex flex-wrap items-center justify-between gap-3 sm:gap-4 bg-white/[0.01]">
                         <div class="flex items-center gap-3 font-mono text-xs">
                             <span class="px-2.5 py-1 bg-[#ff1361] text-white font-bold font-mono">PROJECT 02</span>
                             <span class="text-zinc-400">//</span>
@@ -1276,7 +1317,7 @@
                         </div>
 
                         <!-- Technical Deep-Dive -->
-                        <div class="lg:col-span-7 p-6 md:p-10 flex flex-col justify-between">
+                        <div class="lg:col-span-7 p-5 sm:p-6 md:p-10 flex flex-col justify-between">
                             <div>
                                 <h3 class="font-syne font-black text-3xl sm:text-4xl text-white uppercase tracking-tight mb-4">
                                     Kirana Register — Financial Microservices Platform
@@ -1318,7 +1359,7 @@
 
                 <!-- Project 03: CityPulse AI -->
                 <div class="mondragon-card border border-white/10 overflow-hidden">
-                    <div class="p-6 md:p-8 border-b border-white/[0.08] flex flex-wrap items-center justify-between gap-4 bg-white/[0.01]">
+                    <div class="p-4 sm:p-6 md:p-8 border-b border-white/[0.08] flex flex-wrap items-center justify-between gap-3 sm:gap-4 bg-white/[0.01]">
                         <div class="flex items-center gap-3 font-mono text-xs">
                             <span class="px-2.5 py-1 bg-sky-500 text-black font-bold font-mono">PROJECT 03</span>
                             <span class="text-zinc-400">//</span>
@@ -1346,7 +1387,7 @@
                         </div>
 
                         <!-- Technical Deep-Dive -->
-                        <div class="lg:col-span-7 p-6 md:p-10 flex flex-col justify-between">
+                        <div class="lg:col-span-7 p-5 sm:p-6 md:p-10 flex flex-col justify-between">
                             <div>
                                 <h3 class="font-syne font-black text-3xl sm:text-4xl text-white uppercase tracking-tight mb-4">
                                     CityPulse AI – Real-Time Urban Intelligence System
@@ -1383,15 +1424,15 @@
         <!-- ============================================== -->
         <!-- SECTION 07: CONTACT / TERMINAL DISPATCH -->
         <!-- ============================================== -->
-        <section id="contact" class="py-24 px-6 border-b border-white/[0.08] bg-[#070a12]">
+        <section id="contact" class="py-16 sm:py-24 px-4 sm:px-6 border-b border-white/[0.08] bg-[#070a12]">
             <div class="max-w-7xl mx-auto">
                 
-                <div class="flex items-center justify-between pb-8 mb-16 border-b border-white/[0.08]">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 sm:pb-8 mb-10 sm:mb-16 border-b border-white/[0.08] gap-2 sm:gap-4">
                     <div class="flex items-center gap-3 font-mono text-xs text-sky-400 uppercase tracking-widest">
                         <span class="w-2 h-2 bg-[#ff1361]"></span>
                         <span>[005] // INITIATE DIRECT TRANSMISSION</span>
                     </div>
-                    <span class="font-mono text-xs text-zinc-400 uppercase">COMMUNICATION CHANNEL</span>
+                    <span class="font-mono text-[11px] sm:text-xs text-zinc-400 uppercase">COMMUNICATION CHANNEL</span>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
@@ -1408,40 +1449,40 @@
                         </div>
 
                         <!-- Communication Matrix with Direct Click-to-Copy -->
-                        <div class="border border-white/10 bg-[#070a12] p-6 font-mono text-xs space-y-4">
-                            <div class="flex items-center justify-between border-b border-white/5 pb-3">
-                                <span class="text-zinc-400">DIRECT EMAIL</span>
+                        <div class="border border-white/10 bg-[#070a12] p-4 sm:p-6 font-mono text-xs space-y-4">
+                            <div class="flex flex-col xs:flex-row xs:items-center justify-between border-b border-white/5 pb-3 gap-1 xs:gap-2">
+                                <span class="text-zinc-500 text-[11px] sm:text-xs">DIRECT EMAIL</span>
                                 <button onclick="copyToClipboard('amogh.pwork@gmail.com', 'EMAIL ADDRESS COPIED!')" 
-                                        class="text-sky-400 hover:text-sky-300 flex items-center gap-1.5 group">
-                                    <span>amogh.pwork@gmail.com</span>
-                                    <i data-lucide="copy" class="w-3.5 h-3.5 opacity-60 group-hover:opacity-100"></i>
+                                        class="text-sky-400 hover:text-sky-300 flex items-center gap-1.5 group self-start xs:self-auto">
+                                    <span class="truncate">amogh.pwork@gmail.com</span>
+                                    <i data-lucide="copy" class="w-3.5 h-3.5 opacity-60 group-hover:opacity-100 shrink-0"></i>
                                 </button>
                             </div>
 
-                            <div class="flex items-center justify-between border-b border-white/5 pb-3">
-                                <span class="text-zinc-400">PORTFOLIO</span>
-                                <a href="https://amoghpportfolio.netlify.app" target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:underline">amoghpportfolio.netlify.app</a>
+                            <div class="flex flex-col xs:flex-row xs:items-center justify-between border-b border-white/5 pb-3 gap-1 xs:gap-2">
+                                <span class="text-zinc-500 text-[11px] sm:text-xs">PORTFOLIO</span>
+                                <a href="https://amoghpportfolio.netlify.app" target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:underline self-start xs:self-auto truncate">amoghpportfolio.netlify.app</a>
                             </div>
 
-                            <div class="flex items-center justify-between border-b border-white/5 pb-3">
-                                <span class="text-zinc-400">LINKEDIN</span>
-                                <a href="https://linkedin.com/in/amogh-prakash-93b585273" target="_blank" rel="noopener noreferrer" onclick="playSfx('click')" class="text-white hover:text-sky-400 transition-colors flex items-center gap-1.5 cursor-pointer">
+                            <div class="flex flex-col xs:flex-row xs:items-center justify-between border-b border-white/5 pb-3 gap-1 xs:gap-2">
+                                <span class="text-zinc-500 text-[11px] sm:text-xs">LINKEDIN</span>
+                                <a href="https://linkedin.com/in/amogh-prakash-93b585273" target="_blank" rel="noopener noreferrer" onclick="playSfx('click')" class="text-white hover:text-sky-400 transition-colors flex items-center gap-1.5 cursor-pointer self-start xs:self-auto">
                                     <svg class="w-3.5 h-3.5 fill-current shrink-0" viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
-                                    <span>amogh-prakash-93b585273</span>
+                                    <span class="truncate">amogh-prakash-93b585273</span>
                                 </a>
                             </div>
 
-                            <div class="flex items-center justify-between border-b border-white/5 pb-3">
-                                <span class="text-zinc-400">GITHUB</span>
-                                <a href="https://github.com/Amoghprakash2k4" target="_blank" rel="noopener noreferrer" onclick="playSfx('click')" class="text-white hover:text-sky-400 transition-colors flex items-center gap-1.5 cursor-pointer">
+                            <div class="flex flex-col xs:flex-row xs:items-center justify-between border-b border-white/5 pb-3 gap-1 xs:gap-2">
+                                <span class="text-zinc-500 text-[11px] sm:text-xs">GITHUB</span>
+                                <a href="https://github.com/Amoghprakash2k4" target="_blank" rel="noopener noreferrer" onclick="playSfx('click')" class="text-white hover:text-sky-400 transition-colors flex items-center gap-1.5 cursor-pointer self-start xs:self-auto">
                                     <svg class="w-3.5 h-3.5 fill-current shrink-0" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
-                                    <span>Amoghprakash2k4</span>
+                                    <span class="truncate">Amoghprakash2k4</span>
                                 </a>
                             </div>
 
-                            <div class="flex items-center justify-between">
-                                <span class="text-zinc-400">UPDATED CV</span>
-                                <a href="AmoghP.pdf" download="Amogh_P_Resume.pdf" class="text-[#ff1361] hover:underline flex items-center gap-1 font-bold">
+                            <div class="flex flex-col xs:flex-row xs:items-center justify-between gap-1 xs:gap-2">
+                                <span class="text-zinc-500 text-[11px] sm:text-xs">UPDATED CV</span>
+                                <a href="AmoghP.pdf" download="Amogh_P_Resume.pdf" class="text-[#ff1361] hover:underline flex items-center gap-1 font-bold self-start xs:self-auto">
                                     DOWNLOAD [PDF] <i data-lucide="download" class="w-3.5 h-3.5"></i>
                                 </a>
                             </div>
@@ -1456,7 +1497,7 @@
 
                     <!-- Right: Formspree AJAX Contact Form -->
                     <div class="lg:col-span-7">
-                        <div class="mondragon-card crosshair-corner p-8 md:p-10 border border-white/10">
+                        <div class="mondragon-card crosshair-corner p-5 sm:p-8 md:p-10 border border-white/10">
                             
                             <form id="contact-form" action="https://formspree.io/f/mnnpedek" method="POST" class="space-y-6">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -1517,14 +1558,15 @@
     <footer class="relative z-20 py-12 px-6 bg-[#020305] border-t border-white/[0.08] font-mono text-xs text-zinc-400">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
             
-            <div class="flex items-center gap-3">
-                <span class="w-2 h-2 bg-[#ff1361]"></span>
+            <div class="flex flex-wrap items-center gap-2 sm:gap-3 text-center md:text-left justify-center md:justify-start">
+                <span class="w-2 h-2 bg-[#ff1361] shrink-0"></span>
                 <span class="text-white font-syne font-bold tracking-wider">AMOGH_PRAKASH</span>
-                <span>// BACKEND & DATA SYSTEMS ENGINEER • EX-JAR • PES CSE 2026</span>
+                <span class="text-zinc-500">//</span>
+                <span>BACKEND & DATA SYSTEMS ENGINEER • EX-JAR • PES CSE 2026</span>
             </div>
 
             <!-- Social Links -->
-            <div class="flex items-center gap-6 relative z-30">
+            <div class="flex flex-wrap items-center justify-center gap-4 sm:gap-6 relative z-30">
                 <a href="https://github.com/Amoghprakash2k4" target="_blank" rel="noopener noreferrer" onclick="playSfx('click')" class="hover:text-sky-400 transition-colors flex items-center gap-1.5 cursor-pointer relative z-30">
                     <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
                     <span>GITHUB</span>
@@ -1586,17 +1628,36 @@
 
     <!-- Floating Quick Launch Button for Terminal (Bottom Left) -->
     <button onclick="toggleCliDrawer()" 
-            class="fixed bottom-6 left-6 z-40 px-3.5 py-2 bg-[#070a12]/90 backdrop-blur-md border border-white/20 hover:border-sky-400 text-zinc-300 hover:text-sky-400 font-mono text-xs shadow-lg transition-all flex items-center gap-2 group">
+            class="fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-40 px-3 py-1.5 sm:px-3.5 sm:py-2 bg-[#070a12]/90 backdrop-blur-md border border-white/20 hover:border-sky-400 text-zinc-300 hover:text-sky-400 font-mono text-[11px] sm:text-xs shadow-lg transition-all flex items-center gap-2 group">
         <span class="w-2 h-2 rounded-full bg-[#ff1361] group-hover:animate-ping"></span>
         <i data-lucide="terminal" class="w-3.5 h-3.5"></i>
         <span>CLI [~]</span>
     </button>
 
+    <!-- Floating Scroll HUD & Quick Top Navigator (Bottom Right - Reactive to Scroll) -->
+    <button id="floating-scroll-hud" 
+            onclick="scrollToTop(event)"
+            title="Scroll to top (Click or tap)"
+            class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 opacity-0 pointer-events-none translate-y-3 transition-all duration-300 px-3 py-1.5 sm:px-3.5 sm:py-2 bg-[#070a12]/90 backdrop-blur-md border border-white/20 hover:border-sky-400 text-zinc-300 hover:text-white font-mono text-[11px] sm:text-xs shadow-lg flex items-center gap-2.5 cursor-pointer group select-none">
+        <span class="relative w-4 h-4 flex items-center justify-center shrink-0">
+            <svg class="w-4 h-4 -rotate-90" viewBox="0 0 36 36">
+                <circle cx="18" cy="18" r="14" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="4"></circle>
+                <circle id="scroll-hud-ring" cx="18" cy="18" r="14" fill="none" stroke="#0098ea" stroke-width="4" stroke-dasharray="88" stroke-dashoffset="88" stroke-linecap="round" class="transition-all duration-100"></circle>
+            </svg>
+        </span>
+        <span id="scroll-hud-pct" class="text-sky-400 font-bold min-w-[26px] text-left">0%</span>
+        <span class="text-zinc-600">//</span>
+        <span class="group-hover:text-[#ff1361] transition-colors flex items-center gap-1 font-semibold">
+            <span>TOP</span>
+            <i data-lucide="arrow-up" class="w-3.5 h-3.5 group-hover:-translate-y-0.5 transition-transform text-sky-400"></i>
+        </span>
+    </button>
+
     <!-- ============================================== -->
     <!-- INTERACTIVE CASE STUDY ARCHITECTURE MODAL -->
     <!-- ============================================== -->
-    <div id="arch-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 sm:p-6" onclick="closeArchModalOnBackdrop(event)">
-        <div class="mondragon-card border border-white/20 max-w-4xl w-full p-6 sm:p-8 max-h-[90vh] overflow-y-auto bg-[#070a12]" onclick="event.stopPropagation()">
+    <div id="arch-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-6" onclick="closeArchModalOnBackdrop(event)">
+        <div class="mondragon-card border border-white/20 max-w-4xl w-full p-4 sm:p-8 max-h-[92vh] overflow-y-auto bg-[#070a12]" onclick="event.stopPropagation()">
             
             <div class="flex items-center justify-between pb-4 mb-6 border-b border-white/10 font-mono text-xs">
                 <div class="flex items-center gap-2">
@@ -1763,25 +1824,43 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // 4. Lenis Smooth Scroll
+        // ==============================================
+        // 4. SCROLL REACTIVE ENGINE (Lenis + GSAP ScrollTrigger + Reactor)
+        // ==============================================
         let lenis = null;
+        let currentScrollVelocity = 0;
+        let lastScrollY = window.scrollY || 0;
+
+        // Register GSAP ScrollTrigger
+        if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+            gsap.registerPlugin(ScrollTrigger);
+        }
+
         if (typeof Lenis !== 'undefined') {
             try {
                 lenis = new Lenis({
-                    duration: 1.1,
+                    duration: 1.15,
                     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
                     direction: 'vertical',
                     smooth: true,
-                    smoothTouch: false,
+                    smoothTouch: false, // Preserves native 120Hz gesture smoothness on touchscreens
                 });
 
+                if (typeof ScrollTrigger !== 'undefined') {
+                    lenis.on('scroll', ScrollTrigger.update);
+                }
+
+                gsap.ticker.add((time) => {
+                    if (lenis) lenis.raf(time * 1000);
+                });
+                gsap.ticker.lagSmoothing(0);
+            } catch (lenisErr) {
+                console.warn('Lenis initialization skipped:', lenisErr);
                 function raf(time) {
                     if (lenis) lenis.raf(time);
                     requestAnimationFrame(raf);
                 }
                 requestAnimationFrame(raf);
-            } catch (lenisErr) {
-                console.warn('Lenis initialization skipped:', lenisErr);
             }
         }
 
@@ -1827,6 +1906,292 @@
                 }
             });
         });
+
+        // ==============================================
+        // 4. PALANTIR GOTHAM-GRADE SCROLL REACTOR & TELEMETRY ENGINE
+        // ==============================================
+        const scrollProgressBar = document.getElementById('scroll-progress-bar');
+        const scrollHud = document.getElementById('floating-scroll-hud');
+        const scrollHudPct = document.getElementById('scroll-hud-pct');
+        const scrollHudRing = document.getElementById('scroll-hud-ring');
+        const headerEl = document.querySelector('header');
+        const navItems = document.querySelectorAll('.nav-item');
+        const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
+        const tickerTrack = document.getElementById('ticker-track');
+        const gothamContext = document.getElementById('gotham-context-marker');
+        const gothamBadge = document.getElementById('gotham-status-badge');
+        const gothamStatus = document.getElementById('gotham-status-text');
+        const sectionIds = ['home', 'about', 'experience', 'simulator', 'capabilities', 'projects', 'contact'];
+
+        // Gotham Tactical Modules mapping
+        const gothamModules = {
+            home: { marker: 'BACKEND, DATA & DISTRIBUTED SYSTEMS', status: 'AVAILABLE' },
+            about: { marker: '[001] // PHILOSOPHY & PRODUCTION ARCHITECTURE', status: 'SYS: ACTIVE' },
+            experience: { marker: '[002] // JAR FINTECH (86.4M EVENTS/DAY)', status: 'PRODUCTION' },
+            simulator: { marker: '[SIM] // APACHE KAFKA CLUSTER INGESTION', status: 'STREAMING' },
+            capabilities: { marker: '[003] // DISTRIBUTED SYSTEMS STACK MATRIX', status: 'VERIFIED' },
+            projects: { marker: '[004] // HIGH-THROUGHPUT SYSTEMS PORTFOLIO', status: 'DEPLOYED' },
+            contact: { marker: '[005] // ENCRYPTED DISPATCH & TRANSMISSION', status: 'READY' }
+        };
+
+        // Gotham-Grade Fluid Momentum Telemetry Ticker (Zero CSS resets, 120fps RAF physics)
+        let tickerX = 0;
+        let tickerScrollVelocity = 0;
+        let tickerTargetVelocity = 0;
+        const tickerBaseSpeed = 0.85; // smooth idle drift
+        let isTickerHovered = false;
+
+        if (tickerTrack) {
+            tickerTrack.addEventListener('mouseenter', () => { isTickerHovered = true; });
+            tickerTrack.addEventListener('mouseleave', () => { isTickerHovered = false; });
+
+            function getTickerSingleWidth() {
+                const firstContent = tickerTrack.querySelector('.ticker-content');
+                return firstContent ? firstContent.offsetWidth : 0;
+            }
+            let singleWidth = getTickerSingleWidth();
+            window.addEventListener('resize', () => { singleWidth = getTickerSingleWidth(); });
+
+            function tickGothamMarquee() {
+                // Smoothly interpolate velocity
+                tickerScrollVelocity += (tickerTargetVelocity - tickerScrollVelocity) * 0.12;
+                tickerTargetVelocity *= 0.88; // graceful decay back to baseline
+
+                const effectiveSpeed = isTickerHovered 
+                    ? (tickerScrollVelocity * 0.5) 
+                    : (tickerBaseSpeed + tickerScrollVelocity * 1.2);
+
+                tickerX -= effectiveSpeed;
+
+                if (singleWidth > 0) {
+                    if (tickerX <= -singleWidth) {
+                        tickerX += singleWidth;
+                    } else if (tickerX > 0) {
+                        tickerX -= singleWidth;
+                    }
+                }
+
+                tickerTrack.style.transform = `translate3d(${tickerX}px, 0, 0)`;
+                requestAnimationFrame(tickGothamMarquee);
+            }
+            requestAnimationFrame(tickGothamMarquee);
+        }
+
+        function onScrollTick() {
+            const scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
+            const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+            const scrollProgress = Math.min(1, Math.max(0, scrollY / maxScroll));
+            const scrollPct = Math.round(scrollProgress * 100);
+
+            // 1. Header Progress Bar Width
+            if (scrollProgressBar) {
+                scrollProgressBar.style.width = `${scrollPct}%`;
+            }
+
+            // 2. Header Glass Elevation on Scroll
+            if (headerEl) {
+                if (scrollY > 40) {
+                    headerEl.classList.add('bg-[#030407]/95', 'shadow-[0_12px_32px_rgba(0,0,0,0.85)]', 'border-white/[0.14]');
+                    headerEl.classList.remove('bg-[#030407]/90');
+                } else {
+                    headerEl.classList.remove('bg-[#030407]/95', 'shadow-[0_12px_32px_rgba(0,0,0,0.85)]', 'border-white/[0.14]');
+                    headerEl.classList.add('bg-[#030407]/90');
+                }
+            }
+
+            // 3. Floating Scroll HUD (Bottom Right)
+            if (scrollHud && scrollHudPct && scrollHudRing) {
+                if (scrollY > 250) {
+                    scrollHud.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-3');
+                    scrollHud.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
+                    scrollHudPct.textContent = `${scrollPct}%`;
+                    const offset = 88 - (88 * scrollProgress);
+                    scrollHudRing.style.strokeDashoffset = `${offset}`;
+                } else {
+                    scrollHud.classList.add('opacity-0', 'pointer-events-none', 'translate-y-3');
+                    scrollHud.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
+                }
+            }
+
+            // 4. Active Section Highlighting & Gotham Tactical Context
+            let activeId = 'home';
+            for (let i = 0; i < sectionIds.length; i++) {
+                const el = document.getElementById(sectionIds[i]);
+                if (el) {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.top <= window.innerHeight * 0.38 && rect.bottom >= window.innerHeight * 0.15) {
+                        activeId = sectionIds[i];
+                    }
+                }
+            }
+
+            // Update Desktop Nav
+            navItems.forEach(item => {
+                const navId = item.getAttribute('data-nav');
+                if (navId === activeId) {
+                    if (navId === 'experience') {
+                        item.className = 'nav-item text-white bg-[#ff1361]/25 px-2.5 py-1 border border-[#ff1361]/60 text-[11px] xl:text-xs font-bold transition-all shadow-[0_0_12px_rgba(255,19,97,0.35)] flex items-center gap-1';
+                    } else {
+                        item.className = 'nav-item text-sky-400 font-bold transition-colors border-b-2 border-sky-400 pb-0.5';
+                    }
+                } else {
+                    if (navId === 'experience') {
+                        item.className = 'nav-item text-[#ff1361] hover:text-white transition-colors flex items-center gap-1';
+                    } else {
+                        item.className = 'nav-item text-zinc-400 hover:text-sky-400 transition-colors';
+                    }
+                }
+            });
+
+            // Update Mobile Drawer
+            mobileNavItems.forEach(item => {
+                const navId = item.getAttribute('data-mobile-nav');
+                if (navId === activeId) {
+                    item.className = 'mobile-nav-item block text-sky-400 font-bold pl-2 border-l-2 border-sky-400 py-1 transition-colors';
+                } else {
+                    item.className = 'mobile-nav-item block text-zinc-300 hover:text-sky-400 py-1 transition-colors';
+                }
+            });
+
+            // Update Palantir Gotham Context Header
+            if (gothamModules[activeId]) {
+                const mod = gothamModules[activeId];
+                if (gothamContext && gothamContext.textContent !== mod.marker) {
+                    gothamContext.textContent = mod.marker;
+                }
+                if (gothamStatus && gothamStatus.textContent !== mod.status) {
+                    gothamStatus.textContent = mod.status;
+                }
+            }
+
+            // 5. Palantir Gotham Card Radar Focus (Illuminates central card in viewport)
+            const allCards = document.querySelectorAll('.mondragon-card');
+            let closestCard = null;
+            let minDistance = Infinity;
+            const viewportCenter = window.innerHeight * 0.5;
+
+            allCards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const cardCenter = rect.top + rect.height * 0.5;
+                const dist = Math.abs(viewportCenter - cardCenter);
+                if (dist < minDistance && rect.top < window.innerHeight * 0.9 && rect.bottom > window.innerHeight * 0.1) {
+                    minDistance = dist;
+                    closestCard = card;
+                }
+            });
+
+            allCards.forEach(card => {
+                if (card === closestCard && minDistance < window.innerHeight * 0.4) {
+                    card.classList.add('gotham-focused');
+                } else {
+                    card.classList.remove('gotham-focused');
+                }
+            });
+
+            // 6. Smooth Scroll Velocity for Ticker Momentum
+            const deltaY = scrollY - lastScrollY;
+            tickerTargetVelocity += deltaY * 0.12;
+            tickerTargetVelocity = Math.max(-14, Math.min(14, tickerTargetVelocity));
+
+            currentScrollVelocity = currentScrollVelocity * 0.82 + Math.abs(deltaY) * 0.18;
+            lastScrollY = scrollY;
+        }
+
+        window.addEventListener('scroll', onScrollTick, { passive: true });
+        if (lenis) {
+            lenis.on('scroll', onScrollTick);
+        }
+        onScrollTick();
+
+        // 5. GSAP ScrollTrigger Reveals & Autonomous Pipeline Trigger
+        if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+            // Palantir Gotham Scrubbed Heading Reveals
+            sectionIds.forEach(id => {
+                const sec = document.getElementById(id);
+                if (sec && id !== 'home') {
+                    const header = sec.querySelector('.border-b');
+                    if (header) {
+                        gsap.from(header, {
+                            scrollTrigger: {
+                                trigger: sec,
+                                start: 'top 85%',
+                                toggleActions: 'play none none none'
+                            },
+                            y: 24,
+                            opacity: 0,
+                            duration: 0.75,
+                            ease: 'power3.out'
+                        });
+                    }
+                }
+            });
+
+            // Telemetry Counter animation for hero metrics
+            const heroMetricsGrid = document.querySelector('#home .grid');
+            if (heroMetricsGrid) {
+                ScrollTrigger.create({
+                    trigger: heroMetricsGrid,
+                    start: 'top 90%',
+                    once: true,
+                    onEnter: () => {
+                        const vals = heroMetricsGrid.querySelectorAll('.font-syne');
+                        if (vals.length >= 4) {
+                            const c1 = { v: 0 };
+                            gsap.to(c1, {
+                                v: 86.4,
+                                duration: 1.5,
+                                ease: 'power2.out',
+                                onUpdate: () => { vals[0].textContent = c1.v.toFixed(1) + 'M'; }
+                            });
+                            const c2 = { v: 0 };
+                            gsap.to(c2, {
+                                v: -24,
+                                duration: 1.3,
+                                ease: 'power2.out',
+                                onUpdate: () => { vals[1].textContent = Math.round(c2.v) + '%'; }
+                            });
+                            const c4 = { v: 0 };
+                            gsap.to(c4, {
+                                v: 91,
+                                duration: 1.4,
+                                ease: 'power2.out',
+                                onUpdate: () => { vals[3].textContent = Math.round(c4.v) + '%'; }
+                            });
+                        }
+                    }
+                });
+            }
+
+            // Kafka Simulator Autonomous Decision-Chain Trigger on Scroll (Palantir Sensor-to-Effector)
+            const simSection = document.getElementById('simulator');
+            if (simSection) {
+                ScrollTrigger.create({
+                    trigger: simSection,
+                    start: 'top 75%',
+                    once: true,
+                    onEnter: () => {
+                        if (typeof injectPipelineEvents === 'function') {
+                            injectPipelineEvents(250, 'burst');
+                        }
+                    }
+                });
+            }
+
+            // Staggered reveal for cards across sections
+            document.querySelectorAll('.mondragon-card').forEach(card => {
+                gsap.from(card, {
+                    scrollTrigger: {
+                        trigger: card,
+                        start: 'top 92%',
+                        toggleActions: 'play none none none'
+                    },
+                    y: 24,
+                    opacity: 0,
+                    duration: 0.7,
+                    ease: 'power2.out'
+                });
+            });
+        }
 
         // 5. Custom Interactive Cursor & Card Glow
         const cursorDot = document.querySelector('.cursor-dot');
@@ -1882,8 +2247,8 @@
             });
         }
 
-        // 7. Interactive Vanilla Tilt
-        if (typeof VanillaTilt !== 'undefined') {
+        // 7. Interactive Vanilla Tilt (Enabled only for desktop / pointer devices to preserve mobile performance)
+        if (typeof VanillaTilt !== 'undefined' && window.innerWidth > 768) {
             VanillaTilt.init(document.querySelectorAll("[data-tilt]"), {
                 max: 5,
                 speed: 400,
@@ -2443,22 +2808,30 @@
                     requestAnimationFrame(animate3D);
                     const time = clock.getElapsedTime();
 
-                    const targetZ = 15 - (window.scrollY * 0.035);
-                    const targetY = (window.scrollY * 0.02);
-                    const targetX = (typeof pointer !== 'undefined' ? pointer.x : 0) * 6.0;
-                    const targetTilt = (typeof pointer !== 'undefined' ? pointer.y : 0) * 4.0;
+                    const scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
+                    const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+                    const scrollProgress = Math.min(1, Math.max(0, scrollY / maxScroll));
 
-                    camera.position.x += (targetX - camera.position.x) * 0.04;
-                    camera.position.y += ((targetY - targetTilt) - camera.position.y) * 0.04;
-                    camera.position.z += (targetZ - camera.position.z) * 0.04;
+                    // Multi-phase scroll-reactive camera orbit across page depth
+                    const targetX = Math.sin(scrollProgress * Math.PI * 2) * 2.8 + (typeof pointer !== 'undefined' ? pointer.x : 0) * 4.5;
+                    const targetY = - (scrollProgress * 5.0) + Math.cos(scrollProgress * Math.PI) * 2.5 - (typeof pointer !== 'undefined' ? pointer.y : 0) * 3.5;
+                    const targetZ = 13.5 + Math.sin(scrollProgress * Math.PI) * 3.5;
+
+                    camera.position.x += (targetX - camera.position.x) * 0.045;
+                    camera.position.y += (targetY - camera.position.y) * 0.045;
+                    camera.position.z += (targetZ - camera.position.z) * 0.045;
                     camera.lookAt(coreMesh.position);
 
-                    coreMesh.rotation.y = time * 0.06;
-                    coreMesh.rotation.x = time * 0.03;
-                    ringMesh.rotation.z = time * 0.04;
-                    ringMesh.rotation.x = Math.PI / 4 + Math.sin(time * 0.2) * 0.1;
+                    // Dynamic rotation acceleration on active scroll velocity
+                    const vel = (typeof currentScrollVelocity !== 'undefined') ? currentScrollVelocity : 0;
+                    const scrollBoost = Math.min(vel * 0.003, 0.045);
 
-                    particleSystem.rotation.y = time * 0.015;
+                    coreMesh.rotation.y += (0.003 + scrollBoost);
+                    coreMesh.rotation.x = time * 0.04;
+                    ringMesh.rotation.z += (0.004 + scrollBoost * 1.4);
+                    ringMesh.rotation.x = Math.PI / 4 + Math.sin(time * 0.25) * 0.12;
+
+                    particleSystem.rotation.y += (0.0012 + scrollBoost * 0.8);
 
                     renderer.render(scene, camera);
                 }
